@@ -308,19 +308,42 @@ body.menu-open .nav-overlay {
   position: fixed;
   top: 0;
   right: 0;
-  width: min(320px, 85vw);
+  width: min(320px, 90vw);
+  max-width: 100%;
   height: 100%;
   z-index: 51;
-  background: rgba(248, 245, 243, 0.98);
-  backdrop-filter: blur(18px);
-  border-left: 1px solid rgba(230, 216, 205, 0.7);
-  padding: 5rem 1.5rem 2rem;
+  background: #f8f5f3;
+  border-left: 1px solid rgba(230, 216, 205, 0.8);
+  padding: 4.5rem 1.5rem 2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.25rem;
   transform: translateX(100%);
   transition: transform 0.3s ease;
-  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.08);
+  box-shadow: -12px 0 32px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
+}
+.nav-drawer-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: #4a3b36;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+}
+.nav-drawer-close:hover {
+  background: rgba(0, 0, 0, 0.06);
 }
 body.menu-open .nav-drawer,
 .nav-overlay[aria-hidden="false"] .nav-drawer {
@@ -619,6 +642,66 @@ body.modal-open {
   font-size: 1.4rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.hero--overlay {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.hero--overlay .hero-media-card {
+  max-width: 100%;
+  padding: 0;
+  border-radius: 0;
+}
+.hero--overlay .hero-image-frame {
+  padding: 0;
+  border-radius: 0;
+  min-height: 420px;
+  display: block;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.hero-overlay > * {
+  pointer-events: auto;
+}
+.hero-overlay--bottom-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  text-align: right;
+  padding: 2rem;
+  background: linear-gradient(to top, rgba(5, 3, 4, 0.85) 0%, transparent 50%);
+}
+.hero-overlay--bottom-right .hero-chip {
+  position: static;
+  margin-bottom: 1rem;
+}
+.hero-overlay--bottom-right .hero-title,
+.hero-overlay--bottom-right .hero-subtitle,
+.hero-overlay--bottom-right .hero-note {
+  color: #f8f5f3;
+}
+.hero-overlay--bottom-right .hero-subtitle {
+  max-width: 28rem;
+  margin-left: auto;
+}
+.hero-overlay--bottom-right .hero-cta {
+  margin-left: auto;
+  margin-right: 0;
+}
+.hero-overlay--bottom-right .hero-meta {
+  margin-left: auto;
+}
+.hero-overlay--bottom-right .meta-item-value {
+  color: #f8f5f3;
+}
+.hero-overlay--bottom-right .meta-item-label {
+  color: rgba(248, 245, 243, 0.7);
 }
 
 .hero-media-card {
@@ -1946,9 +2029,18 @@ body.modal-open {
   }
 
   .brand-logo-wrap {
-    width: 36px;
-    height: 36px;
-    flex: 0 0 36px;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    min-width: 40px;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+  .brand-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 
   .nav-links {
@@ -1959,15 +2051,35 @@ body.modal-open {
     order: 0;
     grid-column: 3;
     justify-self: end;
+    align-self: center;
     width: auto;
     gap: 0.5rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
   }
 
-  .nav-cta .btn-outline,
+  .nav-cta .btn-outline {
+    min-height: 38px;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.72rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    letter-spacing: 0.1em;
+  }
+
   .nav-cta .cart-link {
-    min-height: 40px;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.8rem;
+    min-height: 38px;
+    padding: 0.45rem 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .nav-cta .cart-link span:first-child {
+    font-size: 0.72rem;
   }
 
   .hero {
@@ -1982,12 +2094,29 @@ body.modal-open {
     padding: 0.9rem;
     border-radius: 22px;
   }
+  .hero--overlay .hero-media-card {
+    padding: 0;
+    border-radius: 0;
+  }
 
   .hero-image-frame {
     min-height: 0;
     aspect-ratio: 1 / 1.1;
     padding: 1rem;
     border-radius: 18px;
+  }
+  .hero--overlay .hero-image-frame {
+    padding: 0;
+    border-radius: 0;
+  }
+  .hero-overlay--bottom-right {
+    padding: 1.25rem;
+    background: linear-gradient(to top, rgba(5, 3, 4, 0.9) 0%, transparent 55%);
+  }
+  .hero-overlay--bottom-right .hero-cta .btn,
+  .hero-overlay--bottom-right .hero-cta .btn-outline {
+    width: 100%;
+    max-width: 260px;
   }
 
   .product-media {

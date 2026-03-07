@@ -63,8 +63,9 @@
         </a>
       </div>
     </div>
-    <div id="nav-overlay" class="nav-overlay" aria-hidden="true">
+    <div id="nav-overlay" class="nav-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Menu">
       <nav class="nav-drawer" aria-label="Mobile menu">
+        <button type="button" class="nav-drawer-close" aria-label="Close menu" data-action="close-menu">&times;</button>
         <a href="home.html" class="is-active">Home</a>
         <a href="shop.html">Shop</a>
         <a href="services.html">Services</a>
@@ -77,47 +78,42 @@
   </header>
 
   <main>
-    <!-- Hero (inspired by Franco layout) -->
-    <section class="hero">
-      <div class="container hero-grid">
-        <div>
-          <h1 class="hero-title">
-            Your <span>dream</span> hair <br />
-            deserves to be real
-          </h1>
-          <p class="hero-subtitle">
-            Guided by passion, artistry and a commitment to quality, premium hair products and styling
-            for every occasion are offered by Exclusive Hair Artist, Estelle.
-          </p>
-
-          <div class="hero-cta">
-            <a href="shop.html" class="btn">Shop Signature Collections</a>
-            <a href="services.html" class="btn btn-outline">Book Styling</a>
-          </div>
-          <p class="hero-note">Effortless elegance. Exquisite artistry. Timeless beauty.</p>
-
-          <div class="hero-meta">
-            <div>
-              <div class="meta-item-label">Studio</div>
-              <div class="meta-item-value">Newcastle</div>
-            </div>
-            <div>
-              <div class="meta-item-label">Travel Out</div>
-              <div class="meta-item-value">Optional</div>
-            </div>
-            <div>
-              <div class="meta-item-label">Certified</div>
-              <div class="meta-item-value">Professionally trained</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="hero-media-card" aria-hidden="true">
-          <div class="hero-image-frame">
-            <img src="assets/signature-artistry.jpg" alt="Hairstelle signature bridal artistry" class="hero-image-photo" width="800" height="900" loading="eager" data-hairstelle-image="hero_home" />
+    <!-- Hero – signature artistry image with text overlay bottom-right -->
+    <section class="hero hero--overlay">
+      <div class="hero-media-card">
+        <div class="hero-image-frame">
+          <img src="assets/signature-artistry.jpg" alt="Hairstelle signature bridal artistry" class="hero-image-photo" width="800" height="900" loading="eager" data-hairstelle-image="hero_home" />
+          <div class="hero-overlay hero-overlay--bottom-right">
             <div class="hero-chip">
               <span class="hero-chip-dot"></span>
               Signature artistry
+            </div>
+            <h1 class="hero-title">
+              Your <span>dream</span> hair <br />
+              deserves to be real
+            </h1>
+            <p class="hero-subtitle">
+              Guided by passion, artistry and a commitment to quality, premium hair products and styling
+              for every occasion are offered by Exclusive Hair Artist, Estelle.
+            </p>
+            <div class="hero-cta">
+              <a href="shop.html" class="btn">Shop Signature Collections</a>
+              <a href="services.html" class="btn btn-outline">Book Styling</a>
+            </div>
+            <p class="hero-note">Effortless elegance. Exquisite artistry. Timeless beauty.</p>
+            <div class="hero-meta">
+              <div>
+                <div class="meta-item-label">Studio</div>
+                <div class="meta-item-value">Newcastle</div>
+              </div>
+              <div>
+                <div class="meta-item-label">Travel Out</div>
+                <div class="meta-item-value">Optional</div>
+              </div>
+              <div>
+                <div class="meta-item-label">Certified</div>
+                <div class="meta-item-value">Professionally trained</div>
+              </div>
             </div>
           </div>
         </div>

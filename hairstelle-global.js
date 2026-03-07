@@ -64,6 +64,12 @@
       overlay.querySelectorAll('a').forEach(function (a) {
         a.addEventListener('click', closeMenu);
       });
+      overlay.querySelectorAll('[data-action="close-menu"]').forEach(function (btn) {
+        btn.addEventListener('click', closeMenu);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && document.body.classList.contains('menu-open')) closeMenu();
+      });
     }
     updateCartCount();
   }
