@@ -327,38 +327,43 @@
               <section class="card">
                 <div class="admin-panel-title">All catalogue products</div>
                 <p class="contact-note">
-                  Demo and added products. Set status (New in stock, On special, Sold out) or hide/delete. Changes apply on the shop and home page.
+                  Demo and added products, grouped by category. Set status, hide from shop, or delete. Changes apply on the shop and home page.
                 </p>
+                <div id="catalogue-by-category" class="admin-catalogue-by-category"></div>
+              </section>
+              <section class="card">
+                <div class="admin-panel-title">Added products only</div>
+                <p class="contact-note">Products you added via the form above. Edit or delete; delete removes them from the catalogue.</p>
                 <div class="admin-table-wrap">
-                  <table class="admin-table" aria-label="All products">
+                  <table class="admin-mini-table" aria-label="Added products">
                     <thead>
                       <tr>
-                        <th align="left">Product</th>
+                        <th align="left">Name</th>
                         <th align="left">Category</th>
+                        <th align="left">Home display</th>
                         <th align="right">Price</th>
-                        <th align="left">Status / Badge</th>
                         <th align="left">Action</th>
                       </tr>
                     </thead>
-                    <tbody id="catalogue-tbody"></tbody>
+                    <tbody id="products-tbody"></tbody>
                   </table>
                 </div>
               </section>
               <section class="card">
-                <div class="admin-panel-title">Added products only</div>
-                <p class="contact-note">Products you added via the form above. Delete removes them from the catalogue.</p>
-                <table class="admin-mini-table" aria-label="Added products">
-                  <thead>
-                    <tr>
-                      <th align="left">Name</th>
-                      <th align="left">Category</th>
-                      <th align="left">Home display</th>
-                      <th align="right">Price</th>
-                      <th align="left">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody id="products-tbody"></tbody>
-                </table>
+                <div class="admin-panel-title">Actions recorded</div>
+                <p class="contact-note">Recent add, hide, unhide, and delete actions on products.</p>
+                <div class="admin-table-wrap admin-actions-log-wrap">
+                  <table class="admin-mini-table" aria-label="Actions log">
+                    <thead>
+                      <tr>
+                        <th align="left">Time</th>
+                        <th align="left">Action</th>
+                        <th align="left">Product / detail</th>
+                      </tr>
+                    </thead>
+                    <tbody id="admin-actions-tbody"></tbody>
+                  </table>
+                </div>
               </section>
             </div>
           </section>
@@ -413,7 +418,7 @@
           <section class="admin-tab-panel" id="themes-panel">
             <div class="card">
               <div class="admin-panel-title">Site theme</div>
-              <p class="contact-note">Choose a preset colour theme for the whole site. Applied immediately.</p>
+              <p class="contact-note">Choose a preset colour theme for the whole site. Applied immediately. To show a theme to everyone (e.g. Valentine’s), share a link with <code>?theme=valentines</code> — all visitors opening that link will see the red love theme.</p>
               <div class="admin-themes-grid" id="admin-themes-grid"></div>
             </div>
           </section>
@@ -657,6 +662,28 @@
       if (override === null) { delete o[productId]; } else { o[productId] = override; }
       localStorage.setItem('hairstelle_product_overrides', JSON.stringify(o));
     }
+    function getAdminActions() {
+      try {
+        return JSON.parse(localStorage.getItem('hairstelle_admin_actions') || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+    function pushToAdminActions(action, label, detail) {
+      var log = getAdminActions();
+      log.unshift({ at: new Date().toISOString(), action: action, label: label || '', detail: detail || '' });
+      if (log.length > 100) log = log.slice(0, 100);
+      try { localStorage.setItem('hairstelle_admin_actions', JSON.stringify(log)); } catch (e) {}
+      renderActionsLog();
+    }
+    function renderActionsLog() {
+      var tbody = document.getElementById('admin-actions-tbody');
+      if (!tbody) return;
+      var rows = getAdminActions().slice(0, 30);
+      tbody.innerHTML = rows.length ? rows.map(function (r) {
+        return '<tr><td>' + formatDateLabel(r.at) + '</td><td>' + escapeHtml(r.action) + '</td><td>' + escapeHtml(r.label + (r.detail ? ' – ' + r.detail : '')) + '</td></tr>';
+      }).join('') : '<tr><td colspan="3">No actions recorded yet.</td></tr>';
+    }
     function getCatalogueProducts() {
       try {
         var catalog = window.HairstelleCatalog;
@@ -670,31 +697,51 @@
     function renderCatalogue() {
       var rows = getCatalogueProducts();
       var overrides = getProductOverridesStore();
-      var tbody = document.getElementById('catalogue-tbody');
-      if (!tbody) return;
+      var container = document.getElementById('catalogue-by-category');
+      if (!container) return;
       var statusOptions = [
         { value: '', label: '— Default —' },
         { value: 'New in stock', label: 'New in stock' },
         { value: 'On special', label: 'On special' },
         { value: 'Sold out', label: 'Sold out' }
       ];
-      tbody.innerHTML = rows.map(function (r) {
-        var ov = overrides[r.id] || {};
-        var currentBadge = ov.badge !== undefined ? ov.badge : r.badge;
-        var isHidden = !!ov.hidden;
-        var opt = statusOptions.map(function (o) {
-          return '<option value="' + escapeHtml(o.value) + '"' + (currentBadge === o.value ? ' selected' : '') + '>' + escapeHtml(o.label) + '</option>';
+      var byCategory = {};
+      rows.forEach(function (r) {
+        var cat = r.categoryLabel || r.category || 'Other';
+        if (!byCategory[cat]) byCategory[cat] = [];
+        byCategory[cat].push(r);
+      });
+      var categories = Object.keys(byCategory).sort();
+      container.innerHTML = categories.map(function (cat) {
+        var categoryRows = byCategory[cat];
+        var tableRows = categoryRows.map(function (r) {
+          var ov = overrides[r.id] || {};
+          var currentBadge = ov.badge !== undefined ? ov.badge : r.badge;
+          var isHidden = !!ov.hidden;
+          var opt = statusOptions.map(function (o) {
+            return '<option value="' + escapeHtml(o.value) + '"' + (currentBadge === o.value ? ' selected' : '') + '>' + escapeHtml(o.label) + '</option>';
+          }).join('');
+          return (
+            '<tr data-id="' + escapeHtml(r.id) + '" data-source="' + escapeHtml(r.source) + '"' + (isHidden ? ' class="admin-row-hidden"' : '') + '>' +
+            '<td>' + escapeHtml(r.name || '') + (isHidden ? ' <span class="admin-pill-status admin-pill-status--new">Hidden</span>' : '') + '</td>' +
+            '<td>' + escapeHtml(r.categoryLabel || '') + '</td>' +
+            '<td align="right">' + formatZar(r.price || 0) + '</td>' +
+            '<td><select class="field-select admin-select-inline" data-action="catalogue-status" data-product-id="' + escapeHtml(r.id) + '">' + opt + '</select></td>' +
+            '<td>' + (r.source === 'stored' ? '<button class="btn-text" type="button" data-action="product-edit">Edit</button> ' : '') +
+            '<button class="btn-text" type="button" data-action="' + (r.source === 'stored' ? 'product-delete' : (isHidden ? 'catalogue-unhide' : 'catalogue-hide')) + '">' + (r.source === 'stored' ? 'Delete' : (isHidden ? 'Unhide' : 'Hide from shop')) + '</button>' +
+            (r.source !== 'stored' ? ' <button class="btn-text" type="button" data-action="catalogue-delete">Delete</button>' : '') + '</td>' +
+            '</tr>'
+          );
         }).join('');
         return (
-          '<tr data-id="' + escapeHtml(r.id) + '" data-source="' + escapeHtml(r.source) + '"' + (isHidden ? ' class="admin-row-hidden"' : '') + '>' +
-          '<td>' + escapeHtml(r.name || '') + (isHidden ? ' <span class="admin-pill-status admin-pill-status--new">Hidden</span>' : '') + '</td>' +
-          '<td>' + escapeHtml(r.categoryLabel || '') + '</td>' +
-          '<td align="right">' + formatZar(r.price || 0) + '</td>' +
-          '<td><select class="field-select admin-select-inline" data-action="catalogue-status" data-product-id="' + escapeHtml(r.id) + '">' + opt + '</select></td>' +
-          '<td>' + (r.source === 'stored' ? '<button class="btn-text" type="button" data-action="product-edit">Edit</button> ' : '') + '<button class="btn-text" type="button" data-action="' + (r.source === 'stored' ? 'product-delete' : (isHidden ? 'catalogue-unhide' : 'catalogue-hide')) + '">' + (r.source === 'stored' ? 'Delete' : (isHidden ? 'Unhide' : 'Hide from shop')) + '</button></td>' +
-          '</tr>'
+          '<div class="admin-catalogue-category-block">' +
+          '<h4 class="admin-catalogue-category-title">' + escapeHtml(cat) + '</h4>' +
+          '<div class="admin-table-wrap">' +
+          '<table class="admin-table admin-mini-table" aria-label="Products in ' + escapeHtml(cat) + '">' +
+          '<thead><tr><th align="left">Product</th><th align="left">Category</th><th align="right">Price</th><th align="left">Status / Badge</th><th align="left">Action</th></tr></thead>' +
+          '<tbody>' + tableRows + '</tbody></table></div></div>'
         );
-      }).join('') || '<tr><td colspan="5">No products.</td></tr>';
+      }).join('') || '<p class="contact-note">No products.</p>';
     }
     function renderProducts() {
       var rows = getStore('hairstelle_products');
@@ -844,7 +891,8 @@
       { id: 'gold', name: 'Gold luxury', desc: 'Warm gold & dark' },
       { id: 'rose', name: 'Rose blush', desc: 'Soft rose & cream' },
       { id: 'forest', name: 'Forest', desc: 'Deep green & gold' },
-      { id: 'midnight', name: 'Midnight', desc: 'Cool navy & silver' }
+      { id: 'midnight', name: 'Midnight', desc: 'Cool navy & silver' },
+      { id: 'valentines', name: 'Valentines', desc: 'Red love theme' }
     ];
     function getTheme() {
       return localStorage.getItem('hairstelle_theme') || 'gold';
@@ -1161,8 +1209,11 @@
         };
         rows.unshift(item);
         setStore('hairstelle_products', rows);
+        pushToAdminActions('Added product', item.name, item.categoryLabel || item.category || '');
         renderProducts();
+        renderCatalogue();
         renderProductStats();
+        renderActionsLog();
         e.target.reset();
       }
 
@@ -1219,7 +1270,8 @@
       }
     });
     document.addEventListener('click', function (e) {
-      var btn = e.target && e.target.getAttribute && e.target.getAttribute('data-action');
+      var actionEl = e.target.closest && e.target.closest('[data-action]');
+      var btn = actionEl ? actionEl.getAttribute('data-action') : (e.target && e.target.getAttribute && e.target.getAttribute('data-action'));
       var themeId = e.target.closest && e.target.closest('[data-theme-id]');
       if (themeId) {
         setTheme(themeId.getAttribute('data-theme-id'));
@@ -1346,6 +1398,7 @@
           var history = getStore('hairstelle_products_history');
           history.push({ deletedAt: new Date().toISOString(), id: product.id, name: product.name, categoryLabel: product.categoryLabel, price: product.price, badge: product.badge, details: product.details, description: product.description, featuredOnHome: product.featuredOnHome, source: 'Deleted from store' });
           setStore('hairstelle_products_history', history);
+          pushToAdminActions('Deleted product', product.name, product.categoryLabel || '');
         }
         setStore('hairstelle_products', products.filter(function (x) { return x.id !== id; }));
         renderProducts();
@@ -1354,12 +1407,23 @@
       }
 
       if (btn === 'catalogue-hide') {
+        var name = tr.querySelector('td') ? tr.querySelector('td').textContent.replace(/\s*Hidden\s*$/, '').trim() : id;
         setProductOverride(id, { hidden: true });
+        pushToAdminActions('Hidden from shop', name, id);
         renderCatalogue();
         renderProductStats();
       }
       if (btn === 'catalogue-unhide') {
+        var name = tr.querySelector('td') ? tr.querySelector('td').textContent.replace(/\s*Hidden\s*$/, '').trim() : id;
         setProductOverride(id, null);
+        pushToAdminActions('Unhidden', name, id);
+        renderCatalogue();
+        renderProductStats();
+      }
+      if (btn === 'catalogue-delete') {
+        var name = tr.querySelector('td') ? tr.querySelector('td').textContent.replace(/\s*Hidden\s*$/, '').trim() : id;
+        setProductOverride(id, { hidden: true });
+        pushToAdminActions('Deleted from catalogue', name, id);
         renderCatalogue();
         renderProductStats();
       }
@@ -1435,6 +1499,7 @@
     renderBookings();
     renderProducts();
     renderCatalogue();
+    renderActionsLog();
     renderProductStats();
     renderImages();
     renderThemes();

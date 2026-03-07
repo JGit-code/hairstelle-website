@@ -307,7 +307,15 @@
 
   function applyTheme() {
     try {
-      var theme = localStorage.getItem('hairstelle_theme') || 'gold';
+      var theme = 'gold';
+      var params = new URLSearchParams(window.location.search || '');
+      var urlTheme = params.get('theme');
+      if (urlTheme) {
+        theme = urlTheme;
+        try { localStorage.setItem('hairstelle_theme', theme); } catch (e) {}
+      } else {
+        theme = localStorage.getItem('hairstelle_theme') || theme;
+      }
       document.body.setAttribute('data-hairstelle-theme', theme);
     } catch (e) {}
   }
