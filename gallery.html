@@ -11,6 +11,7 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400;500;600&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <script src="hairstelle-global.js"></script>
   <script>
     document.documentElement.classList.add('is-loading');
     window.addEventListener('load', function () {
@@ -27,11 +28,16 @@
   </div>
   <header class="site-header">
     <div class="container nav">
+      <button type="button" id="nav-toggle" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-overlay">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
       <a href="home.html" class="brand-mark" aria-label="Hairstelle home">
         <div class="brand-logo-wrap">
-          <img src="assets/hairstelle-logo.png" alt="Hairstelle logo" class="brand-logo-img" />
+          <img src="assets/hairstelle-logo.jpg" alt="Hairstelle" class="brand-logo-img" width="44" height="44" loading="eager" data-hairstelle-image="header_logo" />
         </div>
-        <div>
+        <div class="brand-text-wrap">
           <div class="brand-text-main">Hairstelle</div>
           <div class="brand-text-tagline">Where Art Meets Hair</div>
         </div>
@@ -55,6 +61,17 @@
         </a>
       </div>
     </div>
+    <div id="nav-overlay" class="nav-overlay" aria-hidden="true">
+      <nav class="nav-drawer" aria-label="Mobile menu">
+        <a href="home.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html" class="is-active">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="admin-login.html">Admin</a>
+      </nav>
+    </div>
   </header>
 
   <main>
@@ -73,7 +90,7 @@
 
         <div class="gallery-grid">
           <article class="gallery-item">
-            <img src="assets/gallery-1.jpg" alt="Elegant dark bridal updo with floral pins by Hairstelle" class="gallery-image" />
+            <img src="assets/gallery-1.jpg" alt="Elegant dark bridal updo with floral pins by Hairstelle" class="gallery-image" data-hairstelle-image="gallery_1" />
             <div class="gallery-layer"></div>
             <div class="gallery-caption">
               <div class="gallery-label">Bridal artistry</div>
@@ -82,7 +99,7 @@
           </article>
 
           <article class="gallery-item">
-            <img src="assets/gallery-2.jpg" alt="Structured blonde bridal updo created by Hairstelle" class="gallery-image" />
+            <img src="assets/gallery-2.jpg" alt="Structured blonde bridal updo created by Hairstelle" class="gallery-image" data-hairstelle-image="gallery_2" />
             <div class="gallery-layer"></div>
             <div class="gallery-caption">
               <div class="gallery-label">Competition</div>
@@ -91,7 +108,7 @@
           </article>
 
           <article class="gallery-item">
-            <img src="assets/gallery-3.jpg" alt="Soft half-up brunette curls styled by Hairstelle" class="gallery-image" />
+            <img src="assets/gallery-3.jpg" alt="Soft half-up brunette curls styled by Hairstelle" class="gallery-image" data-hairstelle-image="gallery_3" />
             <div class="gallery-layer"></div>
             <div class="gallery-caption">
               <div class="gallery-label">Client look</div>
@@ -100,7 +117,7 @@
           </article>
 
           <article class="gallery-item">
-            <img src="assets/gallery-4.jpg" alt="Elegant brunette ponytail hairstyle by Hairstelle" class="gallery-image" />
+            <img src="assets/gallery-4.jpg" alt="Elegant brunette ponytail hairstyle by Hairstelle" class="gallery-image" data-hairstelle-image="gallery_4" />
             <div class="gallery-layer"></div>
             <div class="gallery-caption">
               <div class="gallery-label">Occasion styling</div>
@@ -109,7 +126,7 @@
           </article>
 
           <article class="gallery-item">
-            <img src="assets/gallery-5.jpg" alt="Blonde braid hairstyle styled by Hairstelle" class="gallery-image" />
+            <img src="assets/gallery-5.jpg" alt="Blonde braid hairstyle styled by Hairstelle" class="gallery-image" data-hairstelle-image="gallery_5" />
             <div class="gallery-layer"></div>
             <div class="gallery-caption">
               <div class="gallery-label">Editorial beauty</div>

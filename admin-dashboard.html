@@ -12,6 +12,7 @@
     rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <script src="products-data.js"></script>
+  <script src="hairstelle-global.js"></script>
   <script>
     document.documentElement.classList.add('is-loading');
     window.addEventListener('load', function () {
@@ -34,11 +35,16 @@
 
   <header class="site-header">
     <div class="container nav">
+      <button type="button" id="nav-toggle" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-overlay">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
       <a href="home.html" class="brand-mark" aria-label="Hairstelle home">
         <div class="brand-logo-wrap">
-          <img src="assets/hairstelle-logo.png" alt="Hairstelle logo" class="brand-logo-img" />
+          <img src="assets/hairstelle-logo.jpg" alt="Hairstelle" class="brand-logo-img" width="44" height="44" loading="eager" data-hairstelle-image="header_logo" />
         </div>
-        <div>
+        <div class="brand-text-wrap">
           <div class="brand-text-main">Hairstelle</div>
           <div class="brand-text-tagline">Admin dashboard</div>
         </div>
@@ -47,6 +53,12 @@
         <button class="btn-outline" type="button" id="admin-logout">Logout</button>
         <a href="home.html" class="btn-outline">Back to site</a>
       </div>
+    </div>
+    <div id="nav-overlay" class="nav-overlay" aria-hidden="true">
+      <nav class="nav-drawer" aria-label="Mobile menu">
+        <a href="home.html">Back to site</a>
+        <button class="nav-drawer-btn" type="button" id="admin-logout-drawer">Logout</button>
+      </nav>
     </div>
   </header>
 
@@ -67,8 +79,10 @@
         <div class="admin-tabs" role="tablist" aria-label="Admin sections">
           <button class="admin-tab" type="button" data-tab-target="overview-panel">Overview</button>
           <button class="admin-tab" type="button" data-tab-target="operations-panel">Sales &amp; bookings</button>
-          <button class="admin-tab is-active" type="button" data-tab-target="products-panel">Product management</button>
-          <button class="admin-tab" type="button" data-tab-target="stats-panel">Product statistics</button>
+          <button class="admin-tab is-active" type="button" data-tab-target="products-panel">Products</button>
+          <button class="admin-tab" type="button" data-tab-target="stats-panel">Statistics</button>
+          <button class="admin-tab" type="button" data-tab-target="images-panel">Images</button>
+          <button class="admin-tab" type="button" data-tab-target="themes-panel">Themes</button>
         </div>
 
         <div class="admin-layout">
@@ -282,11 +296,28 @@
               </section>
 
               <section class="card">
-                <div class="admin-panel-title">Added products</div>
+                <div class="admin-panel-title">All catalogue products</div>
                 <p class="contact-note">
-                  Products added here will appear on the shop page after refresh, while the home page
-                  keeps a separate curated trending preview.
+                  Demo and added products. Set status (New in stock, On special, Sold out) or hide/delete. Changes apply on the shop and home page.
                 </p>
+                <div class="admin-table-wrap">
+                  <table class="admin-table" aria-label="All products">
+                    <thead>
+                      <tr>
+                        <th align="left">Product</th>
+                        <th align="left">Category</th>
+                        <th align="right">Price</th>
+                        <th align="left">Status / Badge</th>
+                        <th align="left">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="catalogue-tbody"></tbody>
+                  </table>
+                </div>
+              </section>
+              <section class="card">
+                <div class="admin-panel-title">Added products only</div>
+                <p class="contact-note">Products you added via the form above. Delete removes them from the catalogue.</p>
                 <table class="admin-mini-table" aria-label="Added products">
                   <thead>
                     <tr>
@@ -304,14 +335,19 @@
           </section>
 
           <section class="admin-tab-panel" id="stats-panel">
-            <div class="admin-panels">
+            <div class="admin-panels admin-stats-layout">
+              <section class="card">
+                <div class="admin-panel-title">Sales over time</div>
+                <div class="admin-chart-wrap">
+                  <canvas id="admin-stats-chart" width="600" height="260" aria-label="Sales chart"></canvas>
+                </div>
+              </section>
               <section class="card">
                 <div class="admin-panel-title">Product statistics</div>
                 <div class="admin-stats-grid" id="product-stats-grid"></div>
               </section>
-
               <section class="card">
-                <div class="admin-panel-title">Category performance snapshot</div>
+                <div class="admin-panel-title">Category performance</div>
                 <table class="admin-mini-table" aria-label="Product statistics by category">
                   <thead>
                     <tr>
@@ -323,6 +359,32 @@
                   <tbody id="product-stats-tbody"></tbody>
                 </table>
               </section>
+            </div>
+          </section>
+
+          <section class="admin-tab-panel" id="images-panel">
+            <div class="card">
+              <div class="admin-panel-title">Image management</div>
+              <p class="contact-note">Change images used across the site. Enter a URL or leave blank to use the default.</p>
+              <table class="admin-table admin-image-table">
+                <thead>
+                  <tr>
+                    <th align="left">Location</th>
+                    <th align="left">Preview</th>
+                    <th align="left">URL or path</th>
+                    <th align="left">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="images-tbody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="admin-tab-panel" id="themes-panel">
+            <div class="card">
+              <div class="admin-panel-title">Site theme</div>
+              <p class="contact-note">Choose a preset colour theme for the whole site. Applied immediately.</p>
+              <div class="admin-themes-grid" id="admin-themes-grid"></div>
             </div>
           </section>
         </div>
@@ -527,6 +589,55 @@
       }).join('') || '<tr><td colspan="5">No booking records yet.</td></tr>';
     }
 
+    function getProductOverridesStore() {
+      try {
+        return JSON.parse(localStorage.getItem('hairstelle_product_overrides') || '{}');
+      } catch (e) {
+        return {};
+      }
+    }
+    function setProductOverride(productId, override) {
+      var o = getProductOverridesStore();
+      if (override === null) { delete o[productId]; } else { o[productId] = override; }
+      localStorage.setItem('hairstelle_product_overrides', JSON.stringify(o));
+    }
+    function getCatalogueProducts() {
+      var catalog = window.HairstelleCatalog;
+      var defaults = (catalog && catalog.getDefaultProducts) ? catalog.getDefaultProducts() : [];
+      var stored = getStore('hairstelle_products').map(function (r) {
+        return { id: r.id, name: r.name, categoryLabel: r.categoryLabel || r.category, price: r.price, badge: r.badge, source: 'stored' };
+      });
+      return defaults.map(function (p) { return { id: p.id, name: p.name, categoryLabel: p.categoryLabel || p.category, price: p.price, badge: p.badge, source: 'default'; }; }).concat(stored);
+    }
+    function renderCatalogue() {
+      var rows = getCatalogueProducts();
+      var overrides = getProductOverridesStore();
+      var tbody = document.getElementById('catalogue-tbody');
+      if (!tbody) return;
+      var statusOptions = [
+        { value: '', label: '— Default —' },
+        { value: 'New in stock', label: 'New in stock' },
+        { value: 'On special', label: 'On special' },
+        { value: 'Sold out', label: 'Sold out' }
+      ];
+      tbody.innerHTML = rows.map(function (r) {
+        var ov = overrides[r.id] || {};
+        var currentBadge = ov.badge !== undefined ? ov.badge : r.badge;
+        var isHidden = !!ov.hidden;
+        var opt = statusOptions.map(function (o) {
+          return '<option value="' + escapeHtml(o.value) + '"' + (currentBadge === o.value ? ' selected' : '') + '>' + escapeHtml(o.label) + '</option>';
+        }).join('');
+        return (
+          '<tr data-id="' + escapeHtml(r.id) + '" data-source="' + escapeHtml(r.source) + '"' + (isHidden ? ' class="admin-row-hidden"' : '') + '>' +
+          '<td>' + escapeHtml(r.name || '') + (isHidden ? ' <span class="admin-pill-status admin-pill-status--new">Hidden</span>' : '') + '</td>' +
+          '<td>' + escapeHtml(r.categoryLabel || '') + '</td>' +
+          '<td align="right">' + formatZar(r.price || 0) + '</td>' +
+          '<td><select class="field-select admin-select-inline" data-action="catalogue-status" data-product-id="' + escapeHtml(r.id) + '">' + opt + '</select></td>' +
+          '<td><button class="btn-text" type="button" data-action="' + (r.source === 'stored' ? 'product-delete' : (isHidden ? 'catalogue-unhide' : 'catalogue-hide')) + '">' + (r.source === 'stored' ? 'Delete' : (isHidden ? 'Unhide' : 'Hide from shop')) + '</button></td>' +
+          '</tr>'
+        );
+      }).join('') || '<tr><td colspan="5">No products.</td></tr>';
+    }
     function renderProducts() {
       var rows = getStore('hairstelle_products');
       var tbody = document.getElementById('products-tbody');
@@ -584,6 +695,119 @@
           '</tr>'
         );
       }).join('') || '<tr><td colspan="3">No product statistics available.</td></tr>';
+      drawStatsChart();
+    }
+    function drawStatsChart() {
+      var canvas = document.getElementById('admin-stats-chart');
+      if (!canvas) return;
+      var sales = getStore('hairstelle_sales');
+      var orders = getStore('hairstelle_orders');
+      var byMonth = {};
+      function addMonth(key, amount) {
+        var n = Number(amount) || 0;
+        byMonth[key] = (byMonth[key] || 0) + n;
+      }
+      sales.forEach(function (r) {
+        var d = (r.date || r.createdAt || '').toString().slice(0, 7);
+        if (d) addMonth(d, r.amount);
+      });
+      orders.forEach(function (r) {
+        var d = (r.date || r.createdAt || '').toString().slice(0, 7);
+        if (d) addMonth(d, r.total);
+      });
+      var months = Object.keys(byMonth).sort().slice(-12);
+      var values = months.map(function (m) { return byMonth[m] || 0; });
+      var maxVal = Math.max.apply(null, values.concat([1]));
+      var w = canvas.width;
+      var h = canvas.height;
+      var ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, w, h);
+      var pad = { left: 50, right: 20, top: 20, bottom: 36 };
+      var chartW = w - pad.left - pad.right;
+      var chartH = h - pad.top - pad.bottom;
+      var barW = months.length ? Math.max(12, (chartW / months.length) * 0.7) : 0;
+      var gap = months.length ? (chartW - barW * months.length) / (months.length + 1) : 0;
+      ctx.fillStyle = 'rgba(243, 234, 220, 0.15)';
+      ctx.font = '11px Poppins, sans-serif';
+      months.forEach(function (m, i) {
+        var x = pad.left + gap + i * (barW + gap);
+        var val = values[i];
+        var barH = maxVal ? (val / maxVal) * chartH : 0;
+        var y = pad.top + chartH - barH;
+        ctx.fillStyle = 'rgba(212, 175, 55, 0.5)';
+        ctx.fillRect(x, y, barW, barH);
+        ctx.fillStyle = 'rgba(243, 234, 220, 0.9)';
+        ctx.textAlign = 'center';
+        ctx.fillText(m.replace(/-/, '\''), x + barW / 2, h - 8);
+        ctx.fillText(formatZar(val).replace('R', ''), x + barW / 2, y - 4);
+      });
+    }
+    var IMAGE_SLOTS = [
+      { key: 'header_logo', label: 'Header logo', default: 'assets/hairstelle-logo.jpg' },
+      { key: 'hero_home', label: 'Hero / signature artistry (home)', default: 'assets/signature-artistry.jpg' },
+      { key: 'gallery_1', label: 'Gallery 1', default: 'assets/gallery-1.jpg' },
+      { key: 'gallery_2', label: 'Gallery 2', default: 'assets/gallery-2.jpg' },
+      { key: 'gallery_3', label: 'Gallery 3', default: 'assets/gallery-3.jpg' },
+      { key: 'gallery_4', label: 'Gallery 4', default: 'assets/gallery-4.jpg' },
+      { key: 'gallery_5', label: 'Gallery 5', default: 'assets/gallery-5.jpg' },
+      { key: 'about_founder', label: 'About – founder photo', default: 'assets/founder-estelle.jpg' }
+    ];
+    function getImageOverrides() {
+      try {
+        return JSON.parse(localStorage.getItem('hairstelle_images') || '{}');
+      } catch (e) {
+        return {};
+      }
+    }
+    function setImageOverride(key, url) {
+      var o = getImageOverrides();
+      if (url) o[key] = url; else delete o[key];
+      localStorage.setItem('hairstelle_images', JSON.stringify(o));
+    }
+    function renderImages() {
+      var tbody = document.getElementById('images-tbody');
+      if (!tbody) return;
+      var overrides = getImageOverrides();
+      tbody.innerHTML = IMAGE_SLOTS.map(function (slot) {
+        var url = overrides[slot.key] !== undefined ? overrides[slot.key] : '';
+        var displayUrl = url || slot.default;
+        return (
+          '<tr data-key="' + escapeHtml(slot.key) + '">' +
+          '<td>' + escapeHtml(slot.label) + '</td>' +
+          '<td><div class="admin-image-preview"><img src="' + escapeHtml(displayUrl) + '" alt="" onerror="this.style.display=\'none\'" /></div></td>' +
+          '<td><input type="text" class="field-input admin-image-url" data-key="' + escapeHtml(slot.key) + '" value="' + escapeHtml(url) + '" placeholder="' + escapeHtml(slot.default) + '" /></td>' +
+          '<td><button type="button" class="btn btn-small" data-action="image-save" data-key="' + escapeHtml(slot.key) + '">Save</button></td>' +
+          '</tr>'
+        );
+      }).join('');
+    }
+    var THEME_PRESETS = [
+      { id: 'gold', name: 'Gold luxury', desc: 'Warm gold & dark' },
+      { id: 'rose', name: 'Rose blush', desc: 'Soft rose & cream' },
+      { id: 'forest', name: 'Forest', desc: 'Deep green & gold' },
+      { id: 'midnight', name: 'Midnight', desc: 'Cool navy & silver' }
+    ];
+    function getTheme() {
+      return localStorage.getItem('hairstelle_theme') || 'gold';
+    }
+    function setTheme(id) {
+      localStorage.setItem('hairstelle_theme', id);
+      document.body.setAttribute('data-hairstelle-theme', id);
+      renderThemes();
+    }
+    function renderThemes() {
+      var grid = document.getElementById('admin-themes-grid');
+      if (!grid) return;
+      var current = getTheme();
+      grid.innerHTML = THEME_PRESETS.map(function (t) {
+        return (
+          '<button type="button" class="admin-theme-card' + (current === t.id ? ' is-active' : '') + '" data-theme-id="' + escapeHtml(t.id) + '">' +
+          '<span class="admin-theme-swatch" data-theme="' + escapeHtml(t.id) + '"></span>' +
+          '<span class="admin-theme-name">' + escapeHtml(t.name) + '</span>' +
+          '<span class="admin-theme-desc">' + escapeHtml(t.desc) + '</span>' +
+          '</button>'
+        );
+      }).join('');
     }
 
     function switchAdminTab(targetId) {
@@ -773,9 +997,15 @@
 
     switchAdminTab('products-panel');
 
-    document.getElementById('admin-logout').addEventListener('click', function () {
+    function doLogout() {
       sessionStorage.removeItem('hairstelle_admin');
       window.location.href = 'admin-login.html';
+    }
+    document.getElementById('admin-logout').addEventListener('click', doLogout);
+    var logoutDrawer = document.getElementById('admin-logout-drawer');
+    if (logoutDrawer) logoutDrawer.addEventListener('click', function () {
+      if (window.Hairstelle && window.Hairstelle.closeMenu) window.Hairstelle.closeMenu();
+      doLogout();
     });
 
     document.getElementById('sales-form').addEventListener('submit', function (e) {
@@ -909,8 +1139,35 @@
       downloadRecordsCsv('all');
     });
 
+    document.addEventListener('change', function (e) {
+      var el = e.target;
+      if (el.getAttribute('data-action') === 'catalogue-status' && el.getAttribute('data-product-id')) {
+        var productId = el.getAttribute('data-product-id');
+        var badge = el.value || undefined;
+        var cur = getProductOverridesStore()[productId] || {};
+        if (badge) setProductOverride(productId, Object.assign({}, cur, { badge: badge }));
+        else setProductOverride(productId, cur.hidden ? { hidden: true } : null);
+        renderCatalogue();
+        renderProductStats();
+      }
+    });
     document.addEventListener('click', function (e) {
       var btn = e.target && e.target.getAttribute && e.target.getAttribute('data-action');
+      var themeId = e.target.closest && e.target.closest('[data-theme-id]');
+      if (themeId) {
+        setTheme(themeId.getAttribute('data-theme-id'));
+        return;
+      }
+      if (btn === 'image-save') {
+        var key = e.target.getAttribute('data-key');
+        var row = e.target.closest('tr');
+        var input = row && row.querySelector('.admin-image-url');
+        if (key && input) {
+          setImageOverride(key, input.value.trim());
+          renderImages();
+        }
+        return;
+      }
       if (!btn) return;
       var tr = e.target.closest('tr');
       var id = tr && tr.getAttribute('data-id');
@@ -939,6 +1196,18 @@
       if (btn === 'product-delete') {
         setStore('hairstelle_products', getStore('hairstelle_products').filter(function (x) { return x.id !== id; }));
         renderProducts();
+        renderCatalogue();
+        renderProductStats();
+      }
+
+      if (btn === 'catalogue-hide') {
+        setProductOverride(id, { hidden: true });
+        renderCatalogue();
+        renderProductStats();
+      }
+      if (btn === 'catalogue-unhide') {
+        setProductOverride(id, null);
+        renderCatalogue();
         renderProductStats();
       }
     });
@@ -947,7 +1216,17 @@
     renderSales();
     renderBookings();
     renderProducts();
+    renderCatalogue();
     renderProductStats();
+    renderImages();
+    renderThemes();
+    document.body.setAttribute('data-hairstelle-theme', getTheme());
+
+    document.querySelectorAll('.admin-tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        if (tab.getAttribute('data-tab-target') === 'stats-panel') setTimeout(drawStatsChart, 50);
+      });
+    });
   </script>
 </body>
 

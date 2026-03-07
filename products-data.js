@@ -7,6 +7,24 @@
     }
   }
 
+  function getProductOverrides() {
+    try {
+      return JSON.parse(localStorage.getItem('hairstelle_product_overrides') || '{}');
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function applyOverrides(item) {
+    var overrides = getProductOverrides()[item.id];
+    if (!overrides) return item;
+    if (overrides.hidden) return null;
+    return Object.assign({}, item, {
+      badge: overrides.badge !== undefined ? overrides.badge : item.badge,
+      status: overrides.status || item.status
+    });
+  }
+
   function mapCategoryKey(category) {
     var value = String(category || '').toLowerCase();
     if (value.indexOf('wig') !== -1) return 'wigs';
@@ -197,7 +215,8 @@
       return getStoreProducts().map(normalizeStoredProduct);
     },
     getShopProducts: function () {
-      return defaultProducts.concat(getStoreProducts().map(normalizeStoredProduct));
+      var combined = defaultProducts.concat(getStoreProducts().map(normalizeStoredProduct));
+      return combined.map(applyOverrides).filter(Boolean);
     },
     getTrendingProducts: function (limit) {
       var maxItems = limit || 4;
@@ -207,7 +226,9 @@
       var defaults = defaultProducts.filter(function (item) {
         return item.featuredOnHome;
       });
-      return stored.concat(defaults).slice(0, maxItems);
-    }
+      var combined = stored.concat(defaults).map(applyOverrides).filter(Boolean);
+      return combined.slice(0, maxItems);
+    },
+    getProductOverrides: getProductOverrides
   };
 }());

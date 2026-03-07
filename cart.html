@@ -11,6 +11,8 @@
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400;500;600&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <script src="products-data.js"></script>
+  <script src="hairstelle-global.js"></script>
   <script>
     document.documentElement.classList.add('is-loading');
     window.addEventListener('load', function () {
@@ -27,11 +29,16 @@
   </div>
   <header class="site-header">
     <div class="container nav">
+      <button type="button" id="nav-toggle" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-overlay">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
       <a href="home.html" class="brand-mark" aria-label="Hairstelle home">
         <div class="brand-logo-wrap">
-          <img src="assets/hairstelle-logo.png" alt="Hairstelle logo" class="brand-logo-img" />
+          <img src="assets/hairstelle-logo.jpg" alt="Hairstelle" class="brand-logo-img" width="44" height="44" loading="eager" data-hairstelle-image="header_logo" />
         </div>
-        <div>
+        <div class="brand-text-wrap">
           <div class="brand-text-main">Hairstelle</div>
           <div class="brand-text-tagline">Where Art Meets Hair</div>
         </div>
@@ -51,9 +58,20 @@
         <a href="contact.html" class="btn-outline">Book Now</a>
         <a href="cart.html" class="cart-link is-active" aria-label="View shopping cart">
           <span>Bag</span>
-          <span class="cart-count">1</span>
+          <span class="cart-count">0</span>
         </a>
       </div>
+    </div>
+    <div id="nav-overlay" class="nav-overlay" aria-hidden="true">
+      <nav class="nav-drawer" aria-label="Mobile menu">
+        <a href="home.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="admin-login.html">Admin</a>
+      </nav>
     </div>
   </header>
 
@@ -65,103 +83,85 @@
             <div class="section-eyebrow">Your bag</div>
             <h1 class="section-title">Review your crowns</h1>
             <p class="section-subtitle">
-              Review your selected item, add your delivery details, and send the finished order to
-              Hairstelle on WhatsApp after selecting your payment option.
+              Review your bag, add your delivery details, and complete payment to place your order.
+              All orders and bookings are paid upfront (no cash payments).
             </p>
           </div>
         </header>
 
-        <div class="cart-layout">
+        <div class="cart-layout" id="cart-layout">
           <section class="card">
-            <table class="cart-table">
+            <div id="cart-empty-message" class="cart-empty-message" style="display: none;">
+              <p>Your bag is empty.</p>
+              <a href="shop.html" class="btn">Continue shopping</a>
+            </div>
+            <table class="cart-table" id="cart-table">
               <thead>
                 <tr>
                   <th align="left">Product</th>
-                  <th align="left">Length</th>
+                  <th align="left">Options</th>
                   <th align="center">Qty</th>
                   <th align="right">Price</th>
                   <th align="right">Total</th>
+                  <th></th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div class="cart-product">
-                      <div class="cart-thumb"></div>
-                      <div>
-                        <div class="product-name">Crown Aura Silk Wig</div>
-                        <div class="product-category">Luxury wig · HD lace</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>22&quot;</td>
-                  <td align="center">1</td>
-                  <td align="right">R9 500</td>
-                  <td align="right">R9 500</td>
-                </tr>
+              <tbody id="cart-tbody">
               </tbody>
             </table>
           </section>
 
-          <aside class="card">
+          <aside class="card" id="cart-summary-card">
             <div class="footer-heading">Order summary</div>
             <div class="cart-summary-row">
               <span>Subtotal</span>
-              <span>R9 500</span>
+              <span id="cart-subtotal">R0</span>
             </div>
             <div class="cart-summary-row">
               <span>Estimated shipping</span>
-              <span>R250</span>
+              <span id="cart-shipping">R0</span>
             </div>
             <div class="cart-summary-row">
               <span>Estimated total</span>
-              <span>R9 750</span>
+              <span id="cart-total">R0</span>
             </div>
             <p class="contact-note">
-              Orders below R2 500 attract a flat R250 delivery fee. Paid orders and cash requests can
-              both be submitted to WhatsApp from the checkout form below.
+              Orders below R2 500 attract a flat R250 delivery fee. All payments are upfront (EFT or card); no cash.
             </p>
           </aside>
         </div>
 
-        <section class="card mt-4">
+        <section class="card mt-4" id="cart-checkout-section" style="display: none;">
           <div class="admin-panel-title">Checkout details</div>
           <form id="cart-checkout-form">
             <div class="form-grid">
               <div>
                 <label class="field-label" for="checkout-name">Full name</label>
-                <input class="field-input" type="text" id="checkout-name" name="name" placeholder="Customer full name" />
+                <input class="field-input" type="text" id="checkout-name" name="name" placeholder="Customer full name" required />
               </div>
               <div>
                 <label class="field-label" for="checkout-phone">Phone / WhatsApp</label>
-                <input class="field-input" type="tel" id="checkout-phone" name="phone" placeholder="e.g. 060 000 0000" />
+                <input class="field-input" type="tel" id="checkout-phone" name="phone" placeholder="e.g. 060 000 0000" required />
               </div>
               <div>
                 <label class="field-label" for="checkout-email">Email</label>
-                <input class="field-input" type="email" id="checkout-email" name="email" placeholder="you@example.com" />
-              </div>
-              <div>
-                <label class="field-label" for="checkout-payment">Payment option</label>
-                <select class="field-select" id="checkout-payment" name="payment">
-                  <option value="Card / EFT paid">Card / EFT paid</option>
-                  <option value="Cash on collection / delivery">Cash on collection / delivery</option>
-                </select>
+                <input class="field-input" type="email" id="checkout-email" name="email" placeholder="you@example.com" required />
               </div>
               <div class="form-grid-full">
                 <label class="field-label" for="checkout-address">Delivery address</label>
-                <input class="field-input" type="text" id="checkout-address" name="address" placeholder="Street address, suburb, city" />
+                <input class="field-input" type="text" id="checkout-address" name="address" placeholder="Street address, suburb, city" required />
               </div>
               <div class="form-grid-full">
                 <label class="field-label" for="checkout-notes">Order notes</label>
                 <textarea class="field-textarea" id="checkout-notes" name="notes"
-                  placeholder="Add delivery notes, colour request, preferred collection time, or anything important."></textarea>
+                  placeholder="Delivery notes, colour request, or anything important."></textarea>
               </div>
             </div>
 
-            <button class="btn mt-3" type="submit">Send order to WhatsApp</button>
             <p class="contact-note">
-              The order is saved for admin records and then opened in WhatsApp to <strong>060 895 7103</strong>.
+              Payment is required upfront. You will receive bank/EFT details after placing your order. No cash payments.
             </p>
+            <button class="btn mt-3" type="submit">Place order</button>
           </form>
         </section>
       </div>
@@ -202,97 +202,162 @@
     </div>
   </footer>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      var form = document.getElementById('cart-checkout-form');
-      if (!form) return;
+    (function () {
+      var CART_MIN_FREE_SHIP = 2500;
+      var DELIVERY_FEE = 250;
 
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
+      function escapeHtml(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
 
-        var ref = 'ORD-' + Date.now();
-        var createdAt = new Date().toISOString();
-        var name = document.getElementById('checkout-name').value.trim();
-        var phone = document.getElementById('checkout-phone').value.trim();
-        var email = document.getElementById('checkout-email').value.trim();
-        var paymentMethod = document.getElementById('checkout-payment').value;
-        var address = document.getElementById('checkout-address').value.trim();
-        var notes = document.getElementById('checkout-notes').value.trim();
+      function formatRand(centsOrNum) {
+        var n = Number(centsOrNum);
+        if (isNaN(n)) return 'R0';
+        return 'R' + Math.round(n).toLocaleString('en-ZA');
+      }
 
-        var order = {
-          id: ref,
-          ref: ref,
-          createdAt: createdAt,
-          date: createdAt.slice(0, 10),
-          client: name,
-          phone: phone,
-          email: email,
-          address: address,
-          item: 'Crown Aura Silk Wig - 22"',
-          quantity: 1,
-          subtotal: 9500,
-          deliveryFee: 250,
-          total: 9750,
-          paymentMethod: paymentMethod,
-          paymentStatus: paymentMethod === 'Card / EFT paid' ? 'Paid' : 'Cash requested',
-          note: notes,
-          status: 'Awaiting confirmation',
-          source: 'Website checkout'
-        };
+      function renderCart() {
+        var tbody = document.getElementById('cart-tbody');
+        var emptyMsg = document.getElementById('cart-empty-message');
+        var table = document.getElementById('cart-table');
+        var summaryCard = document.getElementById('cart-summary-card');
+        var checkoutSection = document.getElementById('cart-checkout-section');
+        var subtotalEl = document.getElementById('cart-subtotal');
+        var shippingEl = document.getElementById('cart-shipping');
+        var totalEl = document.getElementById('cart-total');
 
-        try {
-          var orders = JSON.parse(localStorage.getItem('hairstelle_orders') || '[]');
-          orders.unshift(order);
-          localStorage.setItem('hairstelle_orders', JSON.stringify(orders));
+        if (!tbody || !window.Hairstelle) return;
 
-          if (order.paymentStatus === 'Paid') {
-            var sales = JSON.parse(localStorage.getItem('hairstelle_sales') || '[]');
-            sales.unshift({
-              id: ref,
-              createdAt: createdAt,
-              date: order.date,
-              client: name,
-              amount: order.total,
-              type: 'Product',
-              ref: ref,
-              note: 'Website checkout payment',
-              paymentMethod: paymentMethod,
-              paymentStatus: 'Paid',
-              email: email,
-              phone: phone
-            });
-            localStorage.setItem('hairstelle_sales', JSON.stringify(sales));
-          }
-        } catch (err) {
-          // Continue to WhatsApp even if storage is unavailable.
+        var cart = window.Hairstelle.getCart();
+        var subtotal = 0;
+
+        tbody.innerHTML = '';
+        cart.forEach(function (item) {
+          var price = parseFloat(String(item.price).replace(/[^\d.]/g, '')) || 0;
+          var qty = parseInt(item.quantity, 10) || 1;
+          var lineTotal = price * qty;
+          subtotal += lineTotal;
+
+          var opts = [item.size, item.color].filter(Boolean).join(' · ') || '—';
+          var tr = document.createElement('tr');
+          tr.setAttribute('data-item-id', item.id);
+          tr.innerHTML =
+            '<td><div class="cart-product"><div class="cart-thumb"></div><div><div class="product-name">' + escapeHtml(item.name) + '</div></div></div></td>' +
+            '<td>' + escapeHtml(opts) + '</td>' +
+            '<td align="center">' + qty + '</td>' +
+            '<td align="right">' + formatRand(price) + '</td>' +
+            '<td align="right">' + formatRand(lineTotal) + '</td>' +
+            '<td><button type="button" class="cart-remove-btn" data-item-id="' + escapeHtml(item.id) + '" aria-label="Remove">×</button></td>';
+          tbody.appendChild(tr);
+        });
+
+        var shipping = subtotal >= CART_MIN_FREE_SHIP ? 0 : DELIVERY_FEE;
+        var total = subtotal + shipping;
+
+        if (subtotalEl) subtotalEl.textContent = formatRand(subtotal);
+        if (shippingEl) shippingEl.textContent = formatRand(shipping);
+        if (totalEl) totalEl.textContent = formatRand(total);
+
+        if (cart.length === 0) {
+          if (emptyMsg) emptyMsg.style.display = 'block';
+          if (table) table.style.display = 'none';
+          if (summaryCard) summaryCard.style.display = 'none';
+          if (checkoutSection) checkoutSection.style.display = 'none';
+        } else {
+          if (emptyMsg) emptyMsg.style.display = 'none';
+          if (table) table.style.display = 'table';
+          if (summaryCard) summaryCard.style.display = 'block';
+          if (checkoutSection) checkoutSection.style.display = 'block';
         }
 
-        var whatsappMessage = [
-          'Hairstelle product order',
-          'Reference: ' + ref,
-          '',
-          'Customer information',
-          'Full name: ' + name,
-          'Phone: ' + phone,
-          'Email: ' + email,
-          'Address: ' + address,
-          '',
-          'Order details',
-          'Item: Crown Aura Silk Wig - 22"',
-          'Quantity: 1',
-          'Subtotal: R9 500',
-          'Delivery fee: R250',
-          'Total: R9 750',
-          'Payment option: ' + paymentMethod,
-          'Payment status: ' + order.paymentStatus,
-          'Notes: ' + notes
-        ].join('\n');
+        window.Hairstelle.updateCartCount();
 
-        window.open(
-          'https://wa.me/27608957103?text=' + encodeURIComponent(whatsappMessage),
-          '_blank'
-        );
+        tbody.querySelectorAll('.cart-remove-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var id = btn.getAttribute('data-item-id');
+            if (id) {
+              window.Hairstelle.removeFromCart(id);
+              renderCart();
+            }
+          });
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        renderCart();
+
+        var form = document.getElementById('cart-checkout-form');
+        if (!form) return;
+
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var cart = window.Hairstelle && window.Hairstelle.getCart();
+          if (!cart || cart.length === 0) {
+            alert('Your bag is empty.');
+            return;
+          }
+
+          var ref = 'ORD-' + Date.now();
+          var name = document.getElementById('checkout-name').value.trim();
+          var phone = document.getElementById('checkout-phone').value.trim();
+          var email = document.getElementById('checkout-email').value.trim();
+          var address = document.getElementById('checkout-address').value.trim();
+          var notes = document.getElementById('checkout-notes').value.trim();
+
+          var subtotal = cart.reduce(function (sum, item) {
+            var p = parseFloat(String(item.price).replace(/[^\d.]/g, '')) || 0;
+            var q = parseInt(item.quantity, 10) || 1;
+            return sum + p * q;
+          }, 0);
+          var deliveryFee = subtotal >= 2500 ? 0 : 250;
+          var total = subtotal + deliveryFee;
+
+          var order = {
+            id: ref,
+            ref: ref,
+            createdAt: new Date().toISOString(),
+            client: name,
+            phone: phone,
+            email: email,
+            address: address,
+            items: cart,
+            subtotal: subtotal,
+            deliveryFee: deliveryFee,
+            total: total,
+            paymentStatus: 'Pending payment',
+            note: notes,
+            status: 'Awaiting payment',
+            source: 'Website checkout'
+          };
+
+          try {
+            var orders = JSON.parse(localStorage.getItem('hairstelle_orders') || '[]');
+            orders.unshift(order);
+            localStorage.setItem('hairstelle_orders', JSON.stringify(orders));
+          } catch (err) {}
+
+          window.Hairstelle.setCart([]);
+          renderCart();
+
+          var msg =
+            'Thank you for your order.\n\n' +
+            'Reference: ' + ref + '\n' +
+            'Total: ' + formatRand(total) + '\n\n' +
+            'Please pay by EFT to confirm your order. We will email you our bank details to ' + email + '.\n\n' +
+            'No cash payments. All orders are paid upfront.';
+          alert(msg);
+          document.getElementById('checkout-name').value = '';
+          document.getElementById('checkout-phone').value = '';
+          document.getElementById('checkout-email').value = '';
+          document.getElementById('checkout-address').value = '';
+          document.getElementById('checkout-notes').value = '';
+        });
       });
-    });
+    })();
   </script>
 </body>
 
