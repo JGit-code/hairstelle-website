@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login – Hairstelle</title>
+  <meta name="description" content="Secure admin login for Hairstelle to view, track and process orders and services." />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    document.documentElement.classList.add('is-loading');
+    window.addEventListener('load', function () {
+      document.documentElement.classList.remove('is-loading');
+    });
+  </script>
+</head>
+
+<body class="page">
+  <div class="page-loader" aria-hidden="true">
+    <div class="loader-orb">
+      <div class="loader-ring"></div>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="home.html" class="brand-mark" aria-label="Hairstelle home">
+        <div class="brand-logo-wrap">
+          <img src="assets/hairstelle-logo.png" alt="Hairstelle logo" class="brand-logo-img" />
+        </div>
+        <div>
+          <div class="brand-text-main">Hairstelle</div>
+          <div class="brand-text-tagline">Admin area</div>
+        </div>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="card" style="max-width:480px; margin:0 auto;">
+          <header class="section-header" style="margin-bottom:1.5rem;">
+            <div>
+              <div class="section-eyebrow">Secure Access</div>
+              <h1 class="section-title">Admin login</h1>
+            </div>
+          </header>
+          <form id="admin-login-form">
+            <div class="form-grid">
+              <div class="form-grid-full">
+                <label class="field-label" for="admin-username">Username</label>
+                <input class="field-input" type="text" id="admin-username" name="username" placeholder="Username" autocomplete="username" />
+              </div>
+              <div class="form-grid-full">
+                <label class="field-label" for="admin-password">Password</label>
+                <input class="field-input" type="password" id="admin-password" name="password" placeholder="Password" autocomplete="current-password" />
+              </div>
+            </div>
+            <p id="admin-error" class="contact-note" style="color:var(--color-error);display:none;">Invalid username or password.</p>
+            <button type="submit" class="btn mt-3" style="width:100%;">Sign in</button>
+            <p class="contact-note">Owner login uses the username <strong>Estelle</strong>.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <span>&copy; 2026 Hairstelle. Admin only.</span>
+      <span>Private dashboard for orders &amp; services.</span>
+    </div>
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var form = document.getElementById('admin-login-form');
+      var err = document.getElementById('admin-error');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var user = document.getElementById('admin-username').value.trim();
+        var pass = document.getElementById('admin-password').value;
+        if (user === 'Estelle' && pass === 'Chetty') {
+          sessionStorage.setItem('hairstelle_admin', '1');
+          window.location.href = 'admin-dashboard.html';
+          return;
+        }
+        err.style.display = 'block';
+      });
+    });
+  </script>
+</body>
+
+</html>
+

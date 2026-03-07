@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Bag – Hairstelle</title>
+  <meta name="description"
+    content="View your Hairstelle shopping bag with premium wigs, bundles, closures, and hair care." />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    document.documentElement.classList.add('is-loading');
+    window.addEventListener('load', function () {
+      document.documentElement.classList.remove('is-loading');
+    });
+  </script>
+</head>
+
+<body class="page">
+  <div class="page-loader" aria-hidden="true">
+    <div class="loader-orb">
+      <div class="loader-ring"></div>
+    </div>
+  </div>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="home.html" class="brand-mark" aria-label="Hairstelle home">
+        <div class="brand-logo-wrap">
+          <img src="assets/hairstelle-logo.png" alt="Hairstelle logo" class="brand-logo-img" />
+        </div>
+        <div>
+          <div class="brand-text-main">Hairstelle</div>
+          <div class="brand-text-tagline">Where Art Meets Hair</div>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="home.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="admin-login.html">Admin</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a href="contact.html" class="btn-outline">Book Now</a>
+        <a href="cart.html" class="cart-link is-active" aria-label="View shopping cart">
+          <span>Bag</span>
+          <span class="cart-count">1</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <header class="section-header">
+          <div>
+            <div class="section-eyebrow">Your bag</div>
+            <h1 class="section-title">Review your crowns</h1>
+            <p class="section-subtitle">
+              Review your selected item, add your delivery details, and send the finished order to
+              Hairstelle on WhatsApp after selecting your payment option.
+            </p>
+          </div>
+        </header>
+
+        <div class="cart-layout">
+          <section class="card">
+            <table class="cart-table">
+              <thead>
+                <tr>
+                  <th align="left">Product</th>
+                  <th align="left">Length</th>
+                  <th align="center">Qty</th>
+                  <th align="right">Price</th>
+                  <th align="right">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="cart-product">
+                      <div class="cart-thumb"></div>
+                      <div>
+                        <div class="product-name">Crown Aura Silk Wig</div>
+                        <div class="product-category">Luxury wig · HD lace</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>22&quot;</td>
+                  <td align="center">1</td>
+                  <td align="right">R9 500</td>
+                  <td align="right">R9 500</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <aside class="card">
+            <div class="footer-heading">Order summary</div>
+            <div class="cart-summary-row">
+              <span>Subtotal</span>
+              <span>R9 500</span>
+            </div>
+            <div class="cart-summary-row">
+              <span>Estimated shipping</span>
+              <span>R250</span>
+            </div>
+            <div class="cart-summary-row">
+              <span>Estimated total</span>
+              <span>R9 750</span>
+            </div>
+            <p class="contact-note">
+              Orders below R2 500 attract a flat R250 delivery fee. Paid orders and cash requests can
+              both be submitted to WhatsApp from the checkout form below.
+            </p>
+          </aside>
+        </div>
+
+        <section class="card mt-4">
+          <div class="admin-panel-title">Checkout details</div>
+          <form id="cart-checkout-form">
+            <div class="form-grid">
+              <div>
+                <label class="field-label" for="checkout-name">Full name</label>
+                <input class="field-input" type="text" id="checkout-name" name="name" placeholder="Customer full name" />
+              </div>
+              <div>
+                <label class="field-label" for="checkout-phone">Phone / WhatsApp</label>
+                <input class="field-input" type="tel" id="checkout-phone" name="phone" placeholder="e.g. 060 000 0000" />
+              </div>
+              <div>
+                <label class="field-label" for="checkout-email">Email</label>
+                <input class="field-input" type="email" id="checkout-email" name="email" placeholder="you@example.com" />
+              </div>
+              <div>
+                <label class="field-label" for="checkout-payment">Payment option</label>
+                <select class="field-select" id="checkout-payment" name="payment">
+                  <option value="Card / EFT paid">Card / EFT paid</option>
+                  <option value="Cash on collection / delivery">Cash on collection / delivery</option>
+                </select>
+              </div>
+              <div class="form-grid-full">
+                <label class="field-label" for="checkout-address">Delivery address</label>
+                <input class="field-input" type="text" id="checkout-address" name="address" placeholder="Street address, suburb, city" />
+              </div>
+              <div class="form-grid-full">
+                <label class="field-label" for="checkout-notes">Order notes</label>
+                <textarea class="field-textarea" id="checkout-notes" name="notes"
+                  placeholder="Add delivery notes, colour request, preferred collection time, or anything important."></textarea>
+              </div>
+            </div>
+
+            <button class="btn mt-3" type="submit">Send order to WhatsApp</button>
+            <p class="contact-note">
+              The order is saved for admin records and then opened in WhatsApp to <strong>060 895 7103</strong>.
+            </p>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="brand-text-main">Hairstelle</div>
+        <p class="footer-brand-copy">
+          A modern, luxury hair house crafting premium textures, timeless styling, and unforgettable
+          beauty moments for women who lead with confidence.
+        </p>
+      </div>
+      <div>
+        <div class="footer-heading">Shop</div>
+        <a href="shop.html" class="footer-link">All products</a>
+        <a href="shop.html" class="footer-link">Wigs</a>
+        <a href="shop.html" class="footer-link">Bundles &amp; closures</a>
+        <a href="shop.html" class="footer-link">Hair care</a>
+      </div>
+      <div>
+        <div class="footer-heading">Experience</div>
+        <a href="services.html" class="footer-link">Hairstyling services</a>
+        <a href="gallery.html" class="footer-link">Gallery</a>
+        <a href="about.html" class="footer-link">About Estelle</a>
+      </div>
+      <div>
+        <div class="footer-heading">Connect</div>
+        <a href="contact.html" class="footer-link">Book an appointment</a>
+        <a href="contact.html" class="footer-link">Contact &amp; press</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&copy; 2026 Hairstelle. All rights reserved.</span>
+      <span>Luxury hair, crafted by Estelle.</span>
+    </div>
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var form = document.getElementById('cart-checkout-form');
+      if (!form) return;
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        var ref = 'ORD-' + Date.now();
+        var createdAt = new Date().toISOString();
+        var name = document.getElementById('checkout-name').value.trim();
+        var phone = document.getElementById('checkout-phone').value.trim();
+        var email = document.getElementById('checkout-email').value.trim();
+        var paymentMethod = document.getElementById('checkout-payment').value;
+        var address = document.getElementById('checkout-address').value.trim();
+        var notes = document.getElementById('checkout-notes').value.trim();
+
+        var order = {
+          id: ref,
+          ref: ref,
+          createdAt: createdAt,
+          date: createdAt.slice(0, 10),
+          client: name,
+          phone: phone,
+          email: email,
+          address: address,
+          item: 'Crown Aura Silk Wig - 22"',
+          quantity: 1,
+          subtotal: 9500,
+          deliveryFee: 250,
+          total: 9750,
+          paymentMethod: paymentMethod,
+          paymentStatus: paymentMethod === 'Card / EFT paid' ? 'Paid' : 'Cash requested',
+          note: notes,
+          status: 'Awaiting confirmation',
+          source: 'Website checkout'
+        };
+
+        try {
+          var orders = JSON.parse(localStorage.getItem('hairstelle_orders') || '[]');
+          orders.unshift(order);
+          localStorage.setItem('hairstelle_orders', JSON.stringify(orders));
+
+          if (order.paymentStatus === 'Paid') {
+            var sales = JSON.parse(localStorage.getItem('hairstelle_sales') || '[]');
+            sales.unshift({
+              id: ref,
+              createdAt: createdAt,
+              date: order.date,
+              client: name,
+              amount: order.total,
+              type: 'Product',
+              ref: ref,
+              note: 'Website checkout payment',
+              paymentMethod: paymentMethod,
+              paymentStatus: 'Paid',
+              email: email,
+              phone: phone
+            });
+            localStorage.setItem('hairstelle_sales', JSON.stringify(sales));
+          }
+        } catch (err) {
+          // Continue to WhatsApp even if storage is unavailable.
+        }
+
+        var whatsappMessage = [
+          'Hairstelle product order',
+          'Reference: ' + ref,
+          '',
+          'Customer information',
+          'Full name: ' + name,
+          'Phone: ' + phone,
+          'Email: ' + email,
+          'Address: ' + address,
+          '',
+          'Order details',
+          'Item: Crown Aura Silk Wig - 22"',
+          'Quantity: 1',
+          'Subtotal: R9 500',
+          'Delivery fee: R250',
+          'Total: R9 750',
+          'Payment option: ' + paymentMethod,
+          'Payment status: ' + order.paymentStatus,
+          'Notes: ' + notes
+        ].join('\n');
+
+        window.open(
+          'https://wa.me/27608957103?text=' + encodeURIComponent(whatsappMessage),
+          '_blank'
+        );
+      });
+    });
+  </script>
+</body>
+
+</html>
+

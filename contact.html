@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact &amp; Booking – Hairstelle</title>
+  <meta name="description"
+    content="Book a hairstyling appointment with Estelle or contact Hairstelle for events, collaborations, and press." />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    document.documentElement.classList.add('is-loading');
+    window.addEventListener('load', function () {
+      document.documentElement.classList.remove('is-loading');
+    });
+  </script>
+</head>
+
+<body class="page">
+  <div class="page-loader" aria-hidden="true">
+    <div class="loader-orb">
+      <div class="loader-ring"></div>
+    </div>
+  </div>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="home.html" class="brand-mark" aria-label="Hairstelle home">
+        <div class="brand-logo-wrap">
+          <img src="assets/hairstelle-logo.png" alt="Hairstelle logo" class="brand-logo-img" />
+        </div>
+        <div>
+          <div class="brand-text-main">Hairstelle</div>
+          <div class="brand-text-tagline">Where Art Meets Hair</div>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="home.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html" class="is-active">Contact</a>
+        <a href="admin-login.html">Admin</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a href="contact.html" class="btn-outline">Book Now</a>
+        <a href="cart.html" class="cart-link" aria-label="View shopping cart">
+          <span>Bag</span>
+          <span class="cart-count">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <header class="section-header">
+          <div>
+            <div class="section-eyebrow">Contact &amp; Booking</div>
+            <h1 class="section-title">Begin your Hairstelle experience</h1>
+            <p class="section-subtitle">
+              Share a few details and the team will respond with availability, next steps, and a
+              tailored recommendation for your hair goals, whether you prefer a private studio visit or
+              a selected travel booking.
+            </p>
+          </div>
+        </header>
+
+        <div class="contact-layout">
+          <section class="card">
+            <form id="booking-form-email">
+              <div class="form-grid">
+                <div>
+                  <label class="field-label" for="name">Full name</label>
+                  <input class="field-input" type="text" id="name" name="name" placeholder="Your name" />
+                </div>
+                <div>
+                  <label class="field-label" for="email">Email</label>
+                  <input class="field-input" type="email" id="email" name="email" placeholder="you@example.com" />
+                </div>
+                <div>
+                  <label class="field-label" for="phone">Phone</label>
+                  <input class="field-input" type="tel" id="phone" name="phone" placeholder="+ country code" />
+                </div>
+                <div>
+                  <label class="field-label" for="service">Service type</label>
+                  <select class="field-select" id="service" name="service">
+                    <option value="">Select</option>
+                    <option>Luxury occasion styling</option>
+                    <option>Wig install</option>
+                    <option>Matric styling</option>
+                    <option>Bridal styling</option>
+                    <option>Travel-to-client booking</option>
+                    <option>Editorial / competition</option>
+                    <option>Masterclass / education</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="field-label" for="preferred-date">Preferred date</label>
+                  <input class="field-input" type="date" id="preferred-date" name="preferred-date" />
+                </div>
+                <div class="form-grid-full">
+                  <label class="field-label" for="address">Address / venue</label>
+                  <input class="field-input" type="text" id="address" name="address"
+                    placeholder="Studio visit or travel booking address" />
+                </div>
+                <div class="form-grid-full">
+                  <label class="field-label" for="message">Booking details</label>
+                  <textarea class="field-textarea" id="message" name="message"
+                    placeholder="Share your preferred dates, occasion, and any hair goals or questions."></textarea>
+                </div>
+              </div>
+
+              <button type="submit" class="btn mt-3">Send booking to WhatsApp</button>
+              <p class="contact-note">
+                This form saves the booking request for admin records and opens WhatsApp to
+                <strong>060 895 7103</strong> with the full booking format ready to send.
+              </p>
+            </form>
+          </section>
+
+          <aside class="card">
+            <div class="footer-heading">Direct contact</div>
+            <div class="detail-row">
+              <div class="detail-label">Email</div>
+              <div class="detail-value">hairstellestudio@gmail.com</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Studio location</div>
+              <div class="detail-value">
+                Private by-appointment studio<br />
+                Newcastle, South Africa
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-label">Best for</div>
+              <div class="detail-value">
+                <ul style="margin:0.4rem 0 0; padding-left:1.1rem;">
+                  <li>Birthdays and occasion styling</li>
+                  <li>Matric and luxury bridal bookings</li>
+                  <li>Competition, editorial, event, and travel enquiries</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-label">Travel bookings</div>
+              <div class="detail-value">
+                Selected travel-to-client appointments are available for booked services by prior
+                arrangement.
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <div class="detail-label">Booking hours</div>
+              <div class="detail-value">
+                Tuesday – Saturday, by appointment only<br />
+                Closed Sunday &amp; Monday
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="brand-text-main">Hairstelle</div>
+        <p class="footer-brand-copy">
+          A modern, luxury hair house crafting premium textures, timeless styling, and unforgettable
+          beauty moments for women who lead with confidence.
+        </p>
+      </div>
+      <div>
+        <div class="footer-heading">Shop</div>
+        <a href="shop.html" class="footer-link">All products</a>
+        <a href="shop.html" class="footer-link">Wigs</a>
+        <a href="shop.html" class="footer-link">Bundles &amp; closures</a>
+        <a href="shop.html" class="footer-link">Hair care</a>
+      </div>
+      <div>
+        <div class="footer-heading">Experience</div>
+        <a href="services.html" class="footer-link">Hairstyling services</a>
+        <a href="gallery.html" class="footer-link">Gallery</a>
+        <a href="about.html" class="footer-link">About Estelle</a>
+      </div>
+      <div>
+        <div class="footer-heading">Connect</div>
+        <a href="contact.html" class="footer-link">Book an appointment</a>
+        <a href="contact.html" class="footer-link">Contact &amp; press</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&copy; 2026 Hairstelle. All rights reserved.</span>
+      <span>Luxury hair, crafted by Estelle.</span>
+    </div>
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var form = document.getElementById('booking-form-email');
+      if (!form) return;
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        var name = document.getElementById('name').value.trim();
+        var email = document.getElementById('email').value.trim();
+        var phone = document.getElementById('phone').value.trim();
+        var service = document.getElementById('service').value.trim();
+        var preferredDate = document.getElementById('preferred-date').value.trim();
+        var address = document.getElementById('address').value.trim();
+        var message = document.getElementById('message').value.trim();
+        var bookingId = 'BK-' + Date.now();
+        var bookingRecord = {
+          id: bookingId,
+          createdAt: new Date().toISOString(),
+          date: preferredDate,
+          status: 'New',
+          client: name,
+          email: email,
+          phone: phone,
+          address: address,
+          service: service,
+          note: message,
+          source: 'Website booking form',
+          contactMethod: 'WhatsApp'
+        };
+
+        try {
+          var bookings = JSON.parse(localStorage.getItem('hairstelle_bookings') || '[]');
+          bookings.unshift(bookingRecord);
+          localStorage.setItem('hairstelle_bookings', JSON.stringify(bookings));
+        } catch (err) {
+          // Keep the WhatsApp handoff working even if localStorage is unavailable.
+        }
+
+        var whatsappMessage = [
+          'Hairstelle booking enquiry',
+          'Reference: ' + bookingId,
+          '',
+          'Customer information',
+          'Full name: ' + name,
+          'Email: ' + email,
+          'Phone: ' + phone,
+          'Preferred date: ' + preferredDate,
+          'Address / venue: ' + address,
+          '',
+          'Booking details',
+          'Service type: ' + service,
+          'Notes: ' + message
+        ].join('\n');
+
+        window.open(
+          'https://wa.me/27608957103?text=' + encodeURIComponent(whatsappMessage),
+          '_blank'
+        );
+      });
+    });
+  </script>
+</body>
+
+</html>
+

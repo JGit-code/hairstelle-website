@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hairstelle – Crown Your Beauty</title>
+  <meta name="description"
+    content="Hairstelle is a luxury hair brand by award-winning stylist Estelle, offering premium wigs, bundles, and professional hairstyling services." />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="products-data.js"></script>
+  <script>
+    document.documentElement.classList.add('is-loading');
+    window.addEventListener('load', function () {
+      document.documentElement.classList.remove('is-loading');
+    });
+  </script>
+</head>
+
+<body class="page">
+  <div class="page-loader" aria-hidden="true">
+    <div class="loader-orb">
+      <div class="loader-ring"></div>
+    </div>
+  </div>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="home.html" class="brand-mark" aria-label="Hairstelle home">
+        <div class="brand-logo-wrap">
+          <img src="assets/hairstelle-logo.png" alt="Hairstelle logo" class="brand-logo-img" />
+        </div>
+        <div>
+          <div class="brand-text-main">Hairstelle</div>
+          <div class="brand-text-tagline">Where Art Meets Hair</div>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="home.html" class="is-active">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="admin-login.html">Admin</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a href="contact.html" class="btn-outline">Book Now</a>
+        <a href="cart.html" class="cart-link" aria-label="View shopping cart">
+          <span>Bag</span>
+          <span class="cart-count">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero (inspired by Franco layout) -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <h1 class="hero-title">
+            Your <span>dream</span> hair <br />
+            deserves to be real
+          </h1>
+          <p class="hero-subtitle">
+            Guided by passion, artistry and a commitment to quality, premium hair products and styling
+            for every occasion are offered by Exclusive Hair Artist, Estelle.
+          </p>
+
+          <div class="hero-cta">
+            <a href="shop.html" class="btn">Shop Signature Collections</a>
+            <a href="services.html" class="btn btn-outline">Book Styling</a>
+          </div>
+          <p class="hero-note">Effortless elegance. Exquisite artistry. Timeless beauty.</p>
+
+          <div class="hero-meta">
+            <div>
+              <div class="meta-item-label">Studio</div>
+              <div class="meta-item-value">Newcastle</div>
+            </div>
+            <div>
+              <div class="meta-item-label">Travel Out</div>
+              <div class="meta-item-value">Optional</div>
+            </div>
+            <div>
+              <div class="meta-item-label">Certified</div>
+              <div class="meta-item-value">Professionally trained</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-media-card" aria-hidden="true">
+          <div class="hero-image-frame">
+            <img src="assets/signature-artistry.jpg" alt="Hairstelle signature bridal artistry" class="hero-image-photo" />
+            <div class="hero-chip">
+              <span class="hero-chip-dot"></span>
+              Signature artistry
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick links (mirroring "View our salons / Meet our stylists / Make a booking") -->
+    <section class="section">
+      <div class="container">
+        <div class="highlight-grid">
+          <article class="highlight-card">
+            <div class="section-eyebrow">The Studio &amp; Travelling Out</div>
+            <h2 class="highlight-title">Hairstelle: One On One</h2>
+            <p class="highlight-copy">
+              By appointment only, whether in my studio or on location. You are made to feel confident
+              and beautiful, one client at a time.
+            </p>
+          </article>
+          <article class="highlight-card">
+            <div class="section-eyebrow">Meet Estelle</div>
+            <h2 class="highlight-title">Exclusive Hair Artist</h2>
+            <p class="highlight-copy">
+              From a passionate hobby in Newcastle to the world championships in Russia, dreams really
+              do come true.
+            </p>
+          </article>
+          <article class="highlight-card">
+            <div class="section-eyebrow">Occasion styling</div>
+            <h2 class="highlight-title">Birthdays to bridal</h2>
+            <p class="highlight-copy">
+              Book refined styling for birthdays, matric farewells, luxury bridal looks, and selected
+              travel-to-client appointments.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="section">
+      <div class="container">
+        <header class="section-header">
+          <div>
+            <div class="section-eyebrow">Signature Hair Collections</div>
+            <h2 class="section-title">Latest trending products</h2>
+            <p class="section-subtitle">
+              A refined preview of the products currently trending on Hairstelle. The full catalogue
+              stays on the shop page, while selected items can also be featured here for visibility.
+            </p>
+          </div>
+        </header>
+        <div class="disclaimer-banner">
+          Online orders below <strong>R2 500</strong> require a flat <strong>R250 delivery fee</strong>.
+        </div>
+
+        <div class="product-grid" id="home-featured-grid"></div>
+
+        <div class="text-center mt-4">
+          <a href="shop.html" class="btn">Explore full shop</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services & Events Preview -->
+    <section class="section">
+      <div class="container">
+        <header class="section-header">
+          <div>
+            <div class="section-eyebrow">Hairstyling Services &amp; Events</div>
+            <h2 class="section-title">From private chair to global stage</h2>
+            <p class="section-subtitle">
+              Estelle blends technical mastery with editorial artistry, offering private appointments,
+              bridal styling, and high-energy competitions.
+            </p>
+          </div>
+        </header>
+
+        <div class="service-grid">
+          <article class="service-card">
+            <h3 class="service-title">Luxury Occasion Styling</h3>
+            <div class="service-meta">
+              <span class="service-duration">By appointment</span>
+              <span class="service-price">From R3 350</span>
+            </div>
+            <p class="service-description">
+              Elegant hairstyling for birthdays, celebrations, photoshoots, and elevated personal moments.
+            </p>
+            <div class="service-tagline">Soft glam | Polished finish | Luxury detail</div>
+          </article>
+
+          <article class="service-card">
+            <h3 class="service-title">Matric &amp; Bridal Styling</h3>
+            <div class="service-meta">
+              <span class="service-duration">On-location</span>
+              <span class="service-price">By consultation</span>
+            </div>
+            <p class="service-description">
+              Bespoke styling tailored to your dress, face shape, and event vision for unforgettable photographs.
+            </p>
+            <div class="service-tagline">Matric farewells | Bridal trials | Event day styling</div>
+          </article>
+
+          <article class="service-card">
+            <h3 class="service-title">Runway &amp; Competition Styling</h3>
+            <div class="service-meta">
+              <span class="service-duration">Editorial</span>
+              <span class="service-price">Limited bookings</span>
+            </div>
+            <p class="service-description">
+              High-impact, camera-ready looks for fashion shows, brand campaigns, and international
+              hairstyling competitions.
+            </p>
+            <div class="service-tagline">Editorial | Avant garde | Brand partnerships</div>
+          </article>
+        </div>
+
+        <div class="text-center mt-4">
+          <a href="services.html" class="btn">View all services</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="brand-text-main">Hairstelle</div>
+        <p class="footer-brand-copy">
+          A modern, luxury hair house crafting premium textures, timeless styling, and unforgettable
+          beauty moments for women who lead with confidence.
+        </p>
+      </div>
+      <div>
+        <div class="footer-heading">Shop</div>
+        <a href="shop.html" class="footer-link">All products</a>
+        <a href="shop.html" class="footer-link">Wigs</a>
+        <a href="shop.html" class="footer-link">Bundles &amp; closures</a>
+        <a href="shop.html" class="footer-link">Hair care</a>
+      </div>
+      <div>
+        <div class="footer-heading">Experience</div>
+        <a href="services.html" class="footer-link">Hairstyling services</a>
+        <a href="gallery.html" class="footer-link">Gallery</a>
+        <a href="about.html" class="footer-link">About Estelle</a>
+      </div>
+      <div>
+        <div class="footer-heading">Connect</div>
+        <a href="contact.html" class="footer-link">Book an appointment</a>
+        <a href="contact.html" class="footer-link">Contact &amp; press</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&copy; 2026 Hairstelle. All rights reserved.</span>
+      <span>Luxury hair, crafted by Estelle.</span>
+    </div>
+  </footer>
+  <script>
+    (function () {
+      function escapeHtml(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      var grid = document.getElementById('home-featured-grid');
+      var catalog = window.HairstelleCatalog;
+      if (!grid || !catalog) return;
+
+      var items = catalog.getTrendingProducts(4);
+      items.forEach(function (item) {
+        var html =
+          '<article class="product-card">' +
+          '<div class="product-media">' +
+          (item.badge ? '<div class="product-ribbon">' + escapeHtml(item.badge) + '</div>' : '') +
+          (item.image ? '<img src="' + item.image + '" alt="' + escapeHtml(item.name) + '" class="product-media-img" />' : '<div class="product-hair-shape"></div>') +
+          '</div>' +
+          '<div class="product-category">' + escapeHtml(item.categoryLabel || item.category || '') + '</div>' +
+          '<h3 class="product-name">' + escapeHtml(item.name) + '</h3>' +
+          '<div class="product-meta">' +
+          '<div class="product-price">R' + escapeHtml(item.price) + '</div>' +
+          '<div class="product-length">' + escapeHtml(item.details || item.description || '') + '</div>' +
+          '</div>' +
+          '<div class="product-footer">' +
+          '<span class="pill">' + escapeHtml(item.shortTag || 'Trending now') + '</span>' +
+          '<a href="shop.html" class="btn btn-small">View details</a>' +
+          '</div>' +
+          '</article>';
+        grid.insertAdjacentHTML('beforeend', html);
+      });
+    }());
+  </script>
+</body>
+
+</html>
+

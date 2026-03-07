@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop – Hairstelle Luxury Hair</title>
+  <meta name="description"
+    content="Shop premium wigs, bundles, closures, and hair care from Hairstelle, a luxury hair brand by award-winning stylist Estelle." />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="products-data.js"></script>
+  <script>
+    document.documentElement.classList.add('is-loading');
+    window.addEventListener('load', function () {
+      document.documentElement.classList.remove('is-loading');
+    });
+  </script>
+</head>
+
+<body class="page">
+  <div class="page-loader" aria-hidden="true">
+    <div class="loader-orb">
+      <div class="loader-ring"></div>
+    </div>
+  </div>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="home.html" class="brand-mark" aria-label="Hairstelle home">
+        <div class="brand-logo-wrap">
+          <img src="assets/hairstelle-logo.png" alt="Hairstelle logo" class="brand-logo-img" />
+        </div>
+        <div>
+          <div class="brand-text-main">Hairstelle</div>
+          <div class="brand-text-tagline">Where Art Meets Hair</div>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="home.html">Home</a>
+        <a href="shop.html" class="is-active">Shop</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="admin-login.html">Admin</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a href="contact.html" class="btn-outline">Book Now</a>
+        <a href="cart.html" class="cart-link" aria-label="View shopping cart">
+          <span>Bag</span>
+          <span class="cart-count">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <header class="section-header">
+          <div>
+            <div class="section-eyebrow">Shop Hairstelle</div>
+            <h1 class="section-title">Premium hair, curated for you</h1>
+            <p class="section-subtitle">
+              Explore luxury wigs, bundles, frontals, closures, and hair care designed to move, last,
+              and glow with you. All products are selected by Estelle for quality and performance.
+            </p>
+          </div>
+        </header>
+
+        <div class="shop-filters mt-3">
+          <label class="filter-label" for="filter-category">Category</label>
+          <select class="field-select filter-select" id="filter-category" name="category">
+            <option value="">All products</option>
+            <option value="wigs">Wigs</option>
+            <option value="bundles">Bundles &amp; closures</option>
+            <option value="frontals">Frontals</option>
+            <option value="care">Hair care</option>
+          </select>
+          <label class="filter-label" for="filter-sort">Sort by</label>
+          <select class="field-select filter-select" id="filter-sort" name="sort">
+            <option value="featured">Featured</option>
+            <option value="newest">Newest</option>
+            <option value="price-low">Price: low to high</option>
+            <option value="price-high">Price: high to low</option>
+          </select>
+          <label class="filter-label" for="filter-price">Price range</label>
+          <select class="field-select filter-select" id="filter-price" name="price">
+            <option value="">All prices</option>
+            <option value="0-3000">Under R3 000</option>
+            <option value="3000-6000">R3 000 – R6 000</option>
+            <option value="6000-10000">R6 000 – R10 000</option>
+            <option value="10000">R10 000+</option>
+          </select>
+        </div>
+        <div class="disclaimer-banner">
+          Products are available online from a minimum order value of <strong>R2 500</strong>, or a
+          flat <strong>R250 delivery fee</strong> applies.
+        </div>
+
+        <div class="product-grid mt-4" id="shop-product-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="brand-text-main">Hairstelle</div>
+        <p class="footer-brand-copy">
+          Premium textures and editorial styling for women who invest in their crowns.
+        </p>
+      </div>
+      <div>
+        <div class="footer-heading">Shop</div>
+        <a href="shop.html" class="footer-link">All products</a>
+        <a href="shop.html" class="footer-link">Wigs</a>
+        <a href="shop.html" class="footer-link">Bundles &amp; closures</a>
+        <a href="shop.html" class="footer-link">Hair care</a>
+      </div>
+      <div>
+        <div class="footer-heading">Experience</div>
+        <a href="services.html" class="footer-link">Hairstyling services</a>
+        <a href="gallery.html" class="footer-link">Gallery</a>
+        <a href="about.html" class="footer-link">About Estelle</a>
+      </div>
+      <div>
+        <div class="footer-heading">Connect</div>
+        <a href="contact.html" class="footer-link">Book an appointment</a>
+        <a href="contact.html" class="footer-link">Contact &amp; press</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&copy; 2026 Hairstelle. All rights reserved.</span>
+      <span>Luxury hair, crafted by Estelle.</span>
+    </div>
+  </footer>
+  <script>
+    (function () {
+      function escapeHtml(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function formatPrice(value) {
+        var n = Number(value || 0);
+        return isNaN(n) ? 0 : n;
+      }
+
+      function readPriceRange(value) {
+        if (!value) return null;
+        if (value === '10000') return { min: 10000, max: Infinity };
+        var parts = value.split('-');
+        return {
+          min: Number(parts[0] || 0),
+          max: Number(parts[1] || Infinity)
+        };
+      }
+
+      function renderCard(item) {
+        return (
+          '<article class="product-card">' +
+          '<div class="product-media">' +
+          (item.badge ? '<div class="product-ribbon">' + escapeHtml(item.badge) + '</div>' : '') +
+          (item.image ? '<img src="' + escapeHtml(item.image) + '" alt="' + escapeHtml(item.name) + '" class="product-media-img" />' : '<div class="product-hair-shape"></div>') +
+          '</div>' +
+          '<div class="product-category">' + escapeHtml(item.categoryLabel || item.category || '') + '</div>' +
+          '<h2 class="product-name">' + escapeHtml(item.name) + '</h2>' +
+          '<div class="product-meta">' +
+          '<div class="product-price">R' + formatPrice(item.price).toLocaleString('en-ZA') + '</div>' +
+          '<div class="product-length">' + escapeHtml(item.details || item.description || '') + '</div>' +
+          '</div>' +
+          '<div class="product-footer">' +
+          '<span class="pill">' + escapeHtml(item.shortTag || 'New arrival') + '</span>' +
+          '<a href="' + escapeHtml(item.link || 'cart.html') + '" class="btn btn-small">' + (item.link === 'product-silk-serum.html' ? 'View details' : 'Add to bag') + '</a>' +
+          '</div>' +
+          '</article>'
+        );
+      }
+
+      var grid = document.getElementById('shop-product-grid');
+      var categoryField = document.getElementById('filter-category');
+      var sortField = document.getElementById('filter-sort');
+      var priceField = document.getElementById('filter-price');
+      var catalog = window.HairstelleCatalog;
+      if (!grid || !catalog) return;
+
+      function renderShop() {
+        var items = catalog.getShopProducts().slice();
+        var range = readPriceRange(priceField.value);
+
+        if (categoryField.value) {
+          items = items.filter(function (item) {
+            return item.categoryKey === categoryField.value;
+          });
+        }
+
+        if (range) {
+          items = items.filter(function (item) {
+            var price = formatPrice(item.price);
+            return price >= range.min && price < range.max;
+          });
+        }
+
+        if (sortField.value === 'newest') {
+          items.reverse();
+        }
+        if (sortField.value === 'price-low') {
+          items.sort(function (a, b) { return formatPrice(a.price) - formatPrice(b.price); });
+        }
+        if (sortField.value === 'price-high') {
+          items.sort(function (a, b) { return formatPrice(b.price) - formatPrice(a.price); });
+        }
+
+        grid.innerHTML = items.map(renderCard).join('');
+      }
+
+      categoryField.addEventListener('change', renderShop);
+      sortField.addEventListener('change', renderShop);
+      priceField.addEventListener('change', renderShop);
+      renderShop();
+    }());
+  </script>
+</body>
+
+</html>
+
