@@ -7,6 +7,8 @@
   <title>Contact &amp; Booking – Hairstelle</title>
   <meta name="description"
     content="Book a hairstyling appointment with Estelle or contact Hairstelle for events, collaborations, and press." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400;500;600&display=swap"
     rel="stylesheet" />
@@ -21,9 +23,10 @@
 </head>
 
 <body class="page">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
   <div class="page-loader" aria-hidden="true">
-    <div class="loader-orb">
-      <div class="loader-ring"></div>
+    <div class="loader-logo-wrap">
+      <img src="assets/hairstelle-logo-octagon.png" alt="" class="loader-logo" width="120" height="120" />
     </div>
   </div>
   <header class="site-header">
@@ -35,7 +38,7 @@
       </button>
       <a href="home.html" class="brand-mark" aria-label="Hairstelle home">
         <div class="brand-logo-wrap">
-          <img src="assets/hairstelle-logo.jpg" alt="Hairstelle" class="brand-logo-img" width="44" height="44" loading="eager" data-hairstelle-image="header_logo" />
+          <img src="assets/hairstelle-logo-octagon.png" alt="Hairstelle" class="brand-logo-img" width="44" height="44" loading="eager" data-hairstelle-image="header_logo" />
         </div>
         <div class="brand-text-wrap">
           <div class="brand-text-main">Hairstelle</div>
@@ -75,7 +78,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="main-content" tabindex="-1">
     <section class="section">
       <div class="container">
         <header class="section-header">
@@ -193,6 +196,7 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <div>
+        <img src="assets/hairstelle-logo-octagon.png" alt="Hairstelle" class="footer-logo" width="80" height="80" loading="lazy" />
         <div class="brand-text-main">Hairstelle</div>
         <p class="footer-brand-copy">
           A modern, luxury hair house crafting premium textures, timeless styling, and unforgettable

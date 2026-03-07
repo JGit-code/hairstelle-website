@@ -5,7 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Login – Hairstelle</title>
-  <meta name="description" content="Secure admin login for Hairstelle to view, track and process orders and services." />
+  <meta name="description" content="Admin login for Hairstelle to view, track and process orders and services. Convenience-only: not secure for production without server-side auth." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400;500;600&display=swap"
     rel="stylesheet" />
@@ -21,8 +23,8 @@
 
 <body class="page">
   <div class="page-loader" aria-hidden="true">
-    <div class="loader-orb">
-      <div class="loader-ring"></div>
+    <div class="loader-logo-wrap">
+      <img src="assets/hairstelle-logo-octagon.png" alt="" class="loader-logo" width="120" height="120" />
     </div>
   </div>
 
@@ -35,7 +37,7 @@
       </button>
       <a href="home.html" class="brand-mark" aria-label="Hairstelle home">
         <div class="brand-logo-wrap">
-          <img src="assets/hairstelle-logo.jpg" alt="Hairstelle" class="brand-logo-img" width="44" height="44" loading="eager" data-hairstelle-image="header_logo" />
+          <img src="assets/hairstelle-logo-octagon.png" alt="Hairstelle" class="brand-logo-img" width="44" height="44" loading="eager" data-hairstelle-image="header_logo" />
         </div>
         <div class="brand-text-wrap">
           <div class="brand-text-main">Hairstelle</div>
@@ -76,6 +78,7 @@
             <p id="admin-error" class="contact-note" style="color:var(--color-error);display:none;">Invalid username or password.</p>
             <button type="submit" class="btn mt-3" style="width:100%;">Sign in</button>
             <p class="contact-note">Owner login uses the username <strong>Estelle</strong>.</p>
+            <p class="contact-note" style="font-size:0.8rem;opacity:0.85;">This is a convenience-only login. For production use, protect the admin area with server-side authentication and HTTPS.</p>
           </form>
         </div>
       </div>

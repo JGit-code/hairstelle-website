@@ -6,7 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard – Hairstelle</title>
   <meta name="description"
-    content="Hairstelle admin dashboard to view, track and process orders and services with email and WhatsApp contact links." />
+    content="Hairstelle admin dashboard to view, track and process orders and services. Convenience-only: not secure for production without server-side auth." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400;500;600&display=swap"
     rel="stylesheet" />
@@ -28,8 +30,8 @@
 
 <body class="page">
   <div class="page-loader" aria-hidden="true">
-    <div class="loader-orb">
-      <div class="loader-ring"></div>
+    <div class="loader-logo-wrap">
+      <img src="assets/hairstelle-logo-octagon.png" alt="" class="loader-logo" width="120" height="120" />
     </div>
   </div>
 
@@ -42,7 +44,7 @@
       </button>
       <a href="home.html" class="brand-mark" aria-label="Hairstelle home">
         <div class="brand-logo-wrap">
-          <img src="assets/hairstelle-logo.jpg" alt="Hairstelle" class="brand-logo-img" width="44" height="44" loading="eager" data-hairstelle-image="header_logo" />
+          <img src="assets/hairstelle-logo-octagon.png" alt="Hairstelle" class="brand-logo-img" width="44" height="44" loading="eager" data-hairstelle-image="header_logo" />
         </div>
         <div class="brand-text-wrap">
           <div class="brand-text-main">Hairstelle</div>
@@ -74,6 +76,7 @@
               A simple overview of incoming online orders and booking enquiries. Each row can be
               connected to your email or WhatsApp for fast follow-up.
             </p>
+            <p class="contact-note" style="margin-top:0.5rem;font-size:0.8rem;opacity:0.9;">Convenience-only access. For production, use server-side authentication and HTTPS.</p>
           </div>
         </header>
 
@@ -88,7 +91,11 @@
 
         <div class="admin-layout">
           <section class="admin-tab-panel" id="overview-panel">
-            <div class="card">
+            <div class="card" id="order-status-counts-card">
+              <div class="admin-panel-title">Order status summary</div>
+              <div class="admin-order-status-grid" id="order-status-counts"></div>
+            </div>
+            <div class="card mt-4">
               <div class="admin-panel-title">Orders &amp; enquiries (quick view)</div>
               <table class="admin-table">
                 <thead>
@@ -107,6 +114,21 @@
             </div>
 
             <section class="card mt-4">
+              <div class="admin-panel-title">Booking calendar</div>
+              <p class="contact-note">Upcoming bookings by date. Download as .ics to add to your device calendar and get reminders.</p>
+              <div class="admin-calendar-wrap">
+                <div class="admin-calendar-nav">
+                  <button type="button" class="btn btn-small" id="calendar-prev" aria-label="Previous month">&larr;</button>
+                  <span class="admin-calendar-month" id="calendar-month-label"></span>
+                  <button type="button" class="btn btn-small" id="calendar-next" aria-label="Next month">&rarr;</button>
+                </div>
+                <div class="admin-calendar-grid" id="admin-calendar-grid"></div>
+                <div class="mt-3">
+                  <button type="button" class="btn btn-small" id="calendar-download-ics">Download .ics (add to device calendar)</button>
+                </div>
+              </div>
+            </section>
+            <section class="card mt-4">
               <div class="footer-heading">How to use this view</div>
               <p class="contact-note">
                 Use the tabs above to move between your order overview, daily record keeping, and the
@@ -116,22 +138,29 @@
           </section>
 
           <section class="admin-tab-panel" id="operations-panel">
-            <section class="card" style="margin-bottom: 1.5rem;">
-              <div class="admin-panel-title">Export records</div>
-              <p class="contact-note">
-                Email records or download CSV files for payments, bookings, products, or the full
-                management record set.
-              </p>
-              <div class="admin-inline-actions mt-3">
-                <button class="btn btn-small" type="button" id="email-orders-export">Email orders export</button>
-                <button class="btn btn-small" type="button" id="email-sales-export">Email sales export</button>
-                <button class="btn btn-small" type="button" id="email-bookings-export">Email bookings export</button>
-                <button class="btn btn-small" type="button" id="email-all-export">Email all records</button>
-                <button class="btn btn-small" type="button" id="download-orders-csv">Download orders CSV</button>
-                <button class="btn btn-small" type="button" id="download-sales-csv">Download payments CSV</button>
-                <button class="btn btn-small" type="button" id="download-bookings-csv">Download bookings CSV</button>
-                <button class="btn btn-small" type="button" id="download-products-csv">Download products CSV</button>
-                <button class="btn btn-small" type="button" id="download-all-csv">Download all records CSV</button>
+            <section class="card admin-export-card" style="margin-bottom: 1.5rem;">
+              <button type="button" class="admin-export-toggle" id="export-toggle" aria-expanded="false" aria-controls="export-panel">
+                <span class="admin-export-toggle-icon" aria-hidden="true">&#9776;</span>
+                <span>Export records</span>
+              </button>
+              <div id="export-panel" class="admin-export-panel" aria-hidden="true">
+                <p class="contact-note">
+                  Email records or download CSV files for payments, bookings, products, or the full
+                  management record set.
+                </p>
+                <div class="admin-export-scroll">
+                  <div class="admin-inline-actions mt-3">
+                    <button class="btn btn-small" type="button" id="email-orders-export">Email orders export</button>
+                    <button class="btn btn-small" type="button" id="email-sales-export">Email sales export</button>
+                    <button class="btn btn-small" type="button" id="email-bookings-export">Email bookings export</button>
+                    <button class="btn btn-small" type="button" id="email-all-export">Email all records</button>
+                    <button class="btn btn-small" type="button" id="download-orders-csv">Download orders CSV</button>
+                    <button class="btn btn-small" type="button" id="download-sales-csv">Download payments CSV</button>
+                    <button class="btn btn-small" type="button" id="download-bookings-csv">Download bookings CSV</button>
+                    <button class="btn btn-small" type="button" id="download-products-csv">Download products CSV</button>
+                    <button class="btn btn-small" type="button" id="download-all-csv">Download all records CSV</button>
+                  </div>
+                </div>
               </div>
             </section>
 
@@ -365,13 +394,14 @@
           <section class="admin-tab-panel" id="images-panel">
             <div class="card">
               <div class="admin-panel-title">Image management</div>
-              <p class="contact-note">Change images used across the site. Enter a URL or leave blank to use the default.</p>
+              <p class="contact-note">Change images via URL or upload from your PC. Upload replaces the image for that slot.</p>
               <table class="admin-table admin-image-table">
                 <thead>
                   <tr>
                     <th align="left">Location</th>
                     <th align="left">Preview</th>
                     <th align="left">URL or path</th>
+                    <th align="left">Upload from PC</th>
                     <th align="left">Action</th>
                   </tr>
                 </thead>
@@ -526,9 +556,34 @@
       }).slice(0, 8);
     }
 
+    function normalizeOrderStatus(s) {
+      var v = String(s || '').toLowerCase();
+      if (v.indexOf('pending') !== -1 || v === 'new') return 'Pending';
+      if (v.indexOf('place') !== -1) return 'Placed';
+      if (v.indexOf('transit') !== -1) return 'In transit';
+      if (v.indexOf('deliver') !== -1) return 'Delivered';
+      if (v.indexOf('paid') !== -1 || v.indexOf('complete') !== -1) return 'Paid';
+      if (v.indexOf('outstanding') !== -1) return 'Outstanding';
+      return s || 'Pending';
+    }
+    function renderOrderStatusCounts() {
+      var orders = getStore('hairstelle_orders');
+      var byStatus = { Pending: 0, Placed: 0, 'In transit': 0, Delivered: 0, Paid: 0, Outstanding: 0 };
+      orders.forEach(function (o) {
+        var s = normalizeOrderStatus(o.status || o.paymentStatus);
+        if (byStatus[s] !== undefined) byStatus[s]++; else byStatus.Pending++;
+      });
+      var el = document.getElementById('order-status-counts');
+      if (!el) return;
+      el.innerHTML = ['Pending', 'Placed', 'In transit', 'Delivered', 'Paid', 'Outstanding'].map(function (label) {
+        return '<div class="admin-stat-card"><span class="admin-stat-label">' + escapeHtml(label) + '</span><span class="admin-stat-value">' + (byStatus[label] || 0) + '</span></div>';
+      }).join('');
+    }
     function renderOverview() {
+      renderOrderStatusCounts();
       var tbody = document.getElementById('overview-tbody');
       var rows = getOverviewRows();
+      if (!tbody) return;
       if (!rows.length) {
         tbody.innerHTML = '<tr><td colspan="7">No live website orders or booking requests yet.</td></tr>';
         return;
@@ -582,7 +637,8 @@
           '<td>' + escapeHtml(r.client || '') + '</td>' +
           '<td>' + escapeHtml(r.service || '') + '</td>' +
           '<td>' + escapeHtml(r.status || '') + '</td>' +
-          '<td><button class="btn-text" type="button" data-action="booking-complete">Complete</button> ' +
+          '<td><button class="btn-text" type="button" data-action="booking-edit">Edit</button> ' +
+          '<button class="btn-text" type="button" data-action="booking-complete">Complete</button> ' +
           '<button class="btn-text" type="button" data-action="booking-delete">Delete</button></td>' +
           '</tr>'
         );
@@ -602,12 +658,14 @@
       localStorage.setItem('hairstelle_product_overrides', JSON.stringify(o));
     }
     function getCatalogueProducts() {
-      var catalog = window.HairstelleCatalog;
-      var defaults = (catalog && catalog.getDefaultProducts) ? catalog.getDefaultProducts() : [];
+      try {
+        var catalog = window.HairstelleCatalog;
+        var defaults = (catalog && typeof catalog.getDefaultProducts === 'function') ? catalog.getDefaultProducts() : [];
       var stored = getStore('hairstelle_products').map(function (r) {
         return { id: r.id, name: r.name, categoryLabel: r.categoryLabel || r.category, price: r.price, badge: r.badge, source: 'stored' };
       });
-      return defaults.map(function (p) { return { id: p.id, name: p.name, categoryLabel: p.categoryLabel || p.category, price: p.price, badge: p.badge, source: 'default'; }; }).concat(stored);
+      return defaults.map(function (p) { return { id: p.id, name: p.name, categoryLabel: p.categoryLabel || p.category, price: p.price, badge: p.badge, source: 'default' }; }).concat(stored);
+      } catch (e) { return []; }
     }
     function renderCatalogue() {
       var rows = getCatalogueProducts();
@@ -633,7 +691,7 @@
           '<td>' + escapeHtml(r.categoryLabel || '') + '</td>' +
           '<td align="right">' + formatZar(r.price || 0) + '</td>' +
           '<td><select class="field-select admin-select-inline" data-action="catalogue-status" data-product-id="' + escapeHtml(r.id) + '">' + opt + '</select></td>' +
-          '<td><button class="btn-text" type="button" data-action="' + (r.source === 'stored' ? 'product-delete' : (isHidden ? 'catalogue-unhide' : 'catalogue-hide')) + '">' + (r.source === 'stored' ? 'Delete' : (isHidden ? 'Unhide' : 'Hide from shop')) + '</button></td>' +
+          '<td>' + (r.source === 'stored' ? '<button class="btn-text" type="button" data-action="product-edit">Edit</button> ' : '') + '<button class="btn-text" type="button" data-action="' + (r.source === 'stored' ? 'product-delete' : (isHidden ? 'catalogue-unhide' : 'catalogue-hide')) + '">' + (r.source === 'stored' ? 'Delete' : (isHidden ? 'Unhide' : 'Hide from shop')) + '</button></td>' +
           '</tr>'
         );
       }).join('') || '<tr><td colspan="5">No products.</td></tr>';
@@ -648,7 +706,7 @@
           '<td>' + escapeHtml(r.categoryLabel || r.category || '') + '</td>' +
           '<td>' + (r.featuredOnHome ? 'Featured' : 'Shop only') + '</td>' +
           '<td align="right">' + formatZar(r.price || 0) + '</td>' +
-          '<td><button class="btn-text" type="button" data-action="product-delete">Delete</button></td>' +
+          '<td><button class="btn-text" type="button" data-action="product-edit">Edit</button> <button class="btn-text" type="button" data-action="product-delete">Delete</button></td>' +
           '</tr>'
         );
       }).join('') || '<tr><td colspan="5">No added products yet.</td></tr>';
@@ -743,7 +801,7 @@
       });
     }
     var IMAGE_SLOTS = [
-      { key: 'header_logo', label: 'Header logo', default: 'assets/hairstelle-logo.jpg' },
+      { key: 'header_logo', label: 'Header logo', default: 'assets/hairstelle-logo-octagon.png' },
       { key: 'hero_home', label: 'Hero / signature artistry (home)', default: 'assets/signature-artistry.jpg' },
       { key: 'gallery_1', label: 'Gallery 1', default: 'assets/gallery-1.jpg' },
       { key: 'gallery_2', label: 'Gallery 2', default: 'assets/gallery-2.jpg' },
@@ -776,6 +834,7 @@
           '<td>' + escapeHtml(slot.label) + '</td>' +
           '<td><div class="admin-image-preview"><img src="' + escapeHtml(displayUrl) + '" alt="" onerror="this.style.display=\'none\'" /></div></td>' +
           '<td><input type="text" class="field-input admin-image-url" data-key="' + escapeHtml(slot.key) + '" value="' + escapeHtml(url) + '" placeholder="' + escapeHtml(slot.default) + '" /></td>' +
+          '<td><input type="file" class="admin-image-file" data-key="' + escapeHtml(slot.key) + '" accept="image/*" aria-label="Upload image for ' + escapeHtml(slot.label) + '" /></td>' +
           '<td><button type="button" class="btn btn-small" data-action="image-save" data-key="' + escapeHtml(slot.key) + '">Save</button></td>' +
           '</tr>'
         );
@@ -907,8 +966,28 @@
           source: 'Product management'
         };
       });
-
-      return orders.concat(sales, bookings, products);
+      var deletedProducts = (getStore('hairstelle_products_history') || []).map(function (row) {
+        return {
+          dataset: 'Product (deleted)',
+          ref: row.id || '',
+          createdAt: row.deletedAt || '',
+          date: '',
+          client: '',
+          email: '',
+          phone: '',
+          address: '',
+          subject: row.name || '',
+          amount: row.price || '',
+          paymentMethod: '',
+          paymentStatus: '',
+          status: 'Deleted',
+          note: row.badge || '',
+          category: row.categoryLabel || row.category || '',
+          details: row.details || row.description || '',
+          source: row.source || 'Entire history'
+        };
+      });
+      return orders.concat(sales, bookings, products, deletedProducts);
     }
 
     function downloadRecordsCsv(kind) {
@@ -997,18 +1076,23 @@
 
     switchAdminTab('products-panel');
 
+    function safeOn(id, event, fn) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener(event, fn);
+    }
+
     function doLogout() {
       sessionStorage.removeItem('hairstelle_admin');
       window.location.href = 'admin-login.html';
     }
-    document.getElementById('admin-logout').addEventListener('click', doLogout);
+    safeOn('admin-logout', 'click', doLogout);
     var logoutDrawer = document.getElementById('admin-logout-drawer');
     if (logoutDrawer) logoutDrawer.addEventListener('click', function () {
       if (window.Hairstelle && window.Hairstelle.closeMenu) window.Hairstelle.closeMenu();
       doLogout();
     });
 
-    document.getElementById('sales-form').addEventListener('submit', function (e) {
+    safeOn('sales-form', 'submit', function (e) {
       e.preventDefault();
       var rows = getStore('hairstelle_sales');
       var item = {
@@ -1030,7 +1114,7 @@
       e.target.reset();
     });
 
-    document.getElementById('booking-form').addEventListener('submit', function (e) {
+    safeOn('booking-form', 'submit', function (e) {
       e.preventDefault();
       var rows = getStore('hairstelle_bookings');
       var item = {
@@ -1050,7 +1134,7 @@
       e.target.reset();
     });
 
-    document.getElementById('product-form').addEventListener('submit', function (e) {
+    safeOn('product-form', 'submit', function (e) {
       e.preventDefault();
       var rows = getStore('hairstelle_products');
       var fileInput = document.getElementById('product-image');
@@ -1093,12 +1177,12 @@
       }
     });
 
-    document.getElementById('sales-clear').addEventListener('click', function () {
+    safeOn('sales-clear', 'click', function () {
       setStore('hairstelle_sales', []);
       renderSales();
     });
 
-    document.getElementById('bookings-clear').addEventListener('click', function () {
+    safeOn('bookings-clear', 'click', function () {
       setStore('hairstelle_bookings', []);
       renderBookings();
       renderOverview();
@@ -1112,34 +1196,15 @@
       renderProductStats();
     });
 
-    document.getElementById('email-orders-export').addEventListener('click', function () {
-      emailExport('orders');
-    });
-    document.getElementById('email-sales-export').addEventListener('click', function () {
-      emailExport('sales');
-    });
-    document.getElementById('email-bookings-export').addEventListener('click', function () {
-      emailExport('bookings');
-    });
-    document.getElementById('email-all-export').addEventListener('click', function () {
-      emailExport('all');
-    });
-
-    document.getElementById('download-orders-csv').addEventListener('click', function () {
-      downloadRecordsCsv('orders');
-    });
-    document.getElementById('download-sales-csv').addEventListener('click', function () {
-      downloadRecordsCsv('sales');
-    });
-    document.getElementById('download-bookings-csv').addEventListener('click', function () {
-      downloadRecordsCsv('bookings');
-    });
-    document.getElementById('download-products-csv').addEventListener('click', function () {
-      downloadRecordsCsv('products');
-    });
-    document.getElementById('download-all-csv').addEventListener('click', function () {
-      downloadRecordsCsv('all');
-    });
+    safeOn('email-orders-export', 'click', function () { emailExport('orders'); });
+    safeOn('email-sales-export', 'click', function () { emailExport('sales'); });
+    safeOn('email-bookings-export', 'click', function () { emailExport('bookings'); });
+    safeOn('email-all-export', 'click', function () { emailExport('all'); });
+    safeOn('download-orders-csv', 'click', function () { downloadRecordsCsv('orders'); });
+    safeOn('download-sales-csv', 'click', function () { downloadRecordsCsv('sales'); });
+    safeOn('download-bookings-csv', 'click', function () { downloadRecordsCsv('bookings'); });
+    safeOn('download-products-csv', 'click', function () { downloadRecordsCsv('products'); });
+    safeOn('download-all-csv', 'click', function () { downloadRecordsCsv('all'); });
 
     document.addEventListener('change', function (e) {
       var el = e.target;
@@ -1184,6 +1249,46 @@
         setStore('hairstelle_bookings', getStore('hairstelle_bookings').filter(function (x) { return x.id !== id; }));
         renderBookings();
         renderOverview();
+        renderCalendar();
+      }
+
+      if (btn === 'booking-edit') {
+        var bookings = getStore('hairstelle_bookings');
+        var booking = bookings.filter(function (x) { return x.id === id; })[0];
+        if (!booking || !tr) return;
+        var dateVal = (booking.date || booking.createdAt || '').toString().slice(0, 10);
+        tr.innerHTML =
+          '<td><input type="date" class="field-input admin-inline-input" data-edit="date" value="' + escapeHtml(dateVal) + '" /></td>' +
+          '<td><input type="text" class="field-input admin-inline-input" data-edit="client" value="' + escapeHtml(booking.client || '') + '" placeholder="Client" /></td>' +
+          '<td><input type="text" class="field-input admin-inline-input" data-edit="service" value="' + escapeHtml(booking.service || '') + '" placeholder="Service" /></td>' +
+          '<td><select class="field-select admin-inline-input" data-edit="status">' +
+          '<option' + (booking.status === 'New' ? ' selected' : '') + '>New</option>' +
+          '<option' + (booking.status === 'In progress' ? ' selected' : '') + '>In progress</option>' +
+          '<option' + (booking.status === 'Completed' ? ' selected' : '') + '>Completed</option>' +
+          '<option' + (booking.status === 'Cancelled' ? ' selected' : '') + '>Cancelled</option></select></td>' +
+          '<td><button class="btn btn-small" type="button" data-action="booking-save" data-id="' + escapeHtml(id) + '">Save</button> <button class="btn-text" type="button" data-action="booking-cancel-edit">Cancel</button></td>';
+        return;
+      }
+      if (btn === 'booking-save') {
+        var editId = e.target.getAttribute('data-id');
+        if (!editId || !tr) return;
+        var inputs = tr.querySelectorAll('[data-edit]');
+        var updated = {};
+        inputs.forEach(function (inp) {
+          updated[inp.getAttribute('data-edit')] = inp.value;
+        });
+        setStore('hairstelle_bookings', getStore('hairstelle_bookings').map(function (x) {
+          if (x.id !== editId) return x;
+          return Object.assign({}, x, { date: updated.date, client: updated.client, service: updated.service, status: updated.status });
+        }));
+        renderBookings();
+        renderOverview();
+        renderCalendar();
+        return;
+      }
+      if (btn === 'booking-cancel-edit') {
+        renderBookings();
+        return;
       }
 
       if (btn === 'booking-complete') {
@@ -1193,10 +1298,56 @@
         }));
         renderBookings();
         renderOverview();
+        renderCalendar();
       }
 
+      if (btn === 'product-edit') {
+        var products = getStore('hairstelle_products');
+        var product = products.filter(function (x) { return x.id === id; })[0];
+        if (!product || !tr) return;
+        tr.innerHTML =
+          '<td colspan="5" class="admin-edit-cell">' +
+          '<div class="admin-edit-fields">' +
+          '<label>Name</label><input type="text" class="field-input" data-edit="name" value="' + escapeHtml(product.name || '') + '" />' +
+          '<label>Price (ZAR)</label><input type="number" class="field-input" data-edit="price" value="' + escapeHtml(product.price || '') + '" />' +
+          '<label>Badge</label><input type="text" class="field-input" data-edit="badge" value="' + escapeHtml(product.badge || '') + '" />' +
+          '<label>Image URL</label><input type="text" class="field-input" data-edit="image" value="' + escapeHtml(product.image || '') + '" />' +
+          '<label>Details</label><input type="text" class="field-input" data-edit="details" value="' + escapeHtml(product.details || '') + '" />' +
+          '<div class="mt-2"><button class="btn btn-small" type="button" data-action="product-save" data-id="' + escapeHtml(id) + '">Save</button> <button class="btn-text" type="button" data-action="product-cancel-edit">Cancel</button></div>' +
+          '</div></td>';
+        return;
+      }
+      if (btn === 'product-save') {
+        var editId = e.target.getAttribute('data-id');
+        if (!editId || !tr) return;
+        var inputs = tr.querySelectorAll('[data-edit]');
+        var updated = {};
+        inputs.forEach(function (inp) {
+          updated[inp.getAttribute('data-edit')] = inp.value;
+        });
+        setStore('hairstelle_products', getStore('hairstelle_products').map(function (x) {
+          if (x.id !== editId) return x;
+          return Object.assign({}, x, { name: updated.name, price: updated.price, badge: updated.badge, image: updated.image, details: updated.details });
+        }));
+        renderProducts();
+        renderCatalogue();
+        renderProductStats();
+        return;
+      }
+      if (btn === 'product-cancel-edit') {
+        renderProducts();
+        renderCatalogue();
+        return;
+      }
       if (btn === 'product-delete') {
-        setStore('hairstelle_products', getStore('hairstelle_products').filter(function (x) { return x.id !== id; }));
+        var products = getStore('hairstelle_products');
+        var product = products.filter(function (x) { return x.id === id; })[0];
+        if (product) {
+          var history = getStore('hairstelle_products_history');
+          history.push({ deletedAt: new Date().toISOString(), id: product.id, name: product.name, categoryLabel: product.categoryLabel, price: product.price, badge: product.badge, details: product.details, description: product.description, featuredOnHome: product.featuredOnHome, source: 'Deleted from store' });
+          setStore('hairstelle_products_history', history);
+        }
+        setStore('hairstelle_products', products.filter(function (x) { return x.id !== id; }));
         renderProducts();
         renderCatalogue();
         renderProductStats();
@@ -1214,6 +1365,71 @@
       }
     });
 
+    var calendarYear = new Date().getFullYear();
+    var calendarMonth = new Date().getMonth();
+    function renderCalendar() {
+      var grid = document.getElementById('admin-calendar-grid');
+      var label = document.getElementById('calendar-month-label');
+      if (!grid || !label) return;
+      var d = new Date(calendarYear, calendarMonth, 1);
+      label.textContent = d.toLocaleDateString('en-ZA', { month: 'long', year: 'numeric' });
+      var bookings = getStore('hairstelle_bookings');
+      var firstDay = new Date(calendarYear, calendarMonth, 1).getDay();
+      var daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+      var pad = (firstDay + 6) % 7;
+      var cells = [];
+      ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].forEach(function (day) {
+        cells.push('<div class="admin-calendar-dayhead">' + day + '</div>');
+      });
+      for (var i = 0; i < pad; i++) cells.push('<div class="admin-calendar-day admin-calendar-day--empty"></div>');
+      for (var day = 1; day <= daysInMonth; day++) {
+        var dateStr = calendarYear + '-' + String(calendarMonth + 1).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+        var dayBookings = bookings.filter(function (b) {
+          var bd = (b.date || b.createdAt || '').toString().slice(0, 10);
+          return bd === dateStr;
+        });
+        var content = '<div class="admin-calendar-day-num">' + day + '</div>';
+        if (dayBookings.length) {
+          content += '<ul class="admin-calendar-events">' + dayBookings.map(function (b) {
+            return '<li>' + escapeHtml(b.client || 'Booking') + ' – ' + escapeHtml(b.service || '') + '</li>';
+          }).join('') + '</ul>';
+        }
+        cells.push('<div class="admin-calendar-day">' + content + '</div>');
+      }
+      grid.innerHTML = cells.join('');
+    }
+    function buildBookingsIcs() {
+      var bookings = getStore('hairstelle_bookings');
+      var lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Hairstelle//Bookings//EN'];
+      bookings.forEach(function (b) {
+        var dt = (b.date || b.createdAt || new Date().toISOString().slice(0, 10)).toString().slice(0, 10);
+        var start = dt.replace(/-/g, '') + 'T090000';
+        var end = dt.replace(/-/g, '') + 'T100000';
+        var summary = (b.client || 'Booking') + ' – ' + (b.service || 'Appointment');
+        lines.push('BEGIN:VEVENT', 'DTSTART:' + start, 'DTEND:' + end, 'SUMMARY:' + summary.replace(/\n/g, ' '), 'END:VEVENT');
+      });
+      lines.push('END:VCALENDAR');
+      return lines.join('\r\n');
+    }
+    safeOn('calendar-prev', 'click', function () {
+      if (calendarMonth === 0) { calendarYear--; calendarMonth = 11; } else calendarMonth--;
+      renderCalendar();
+    });
+    safeOn('calendar-next', 'click', function () {
+      if (calendarMonth === 11) { calendarYear++; calendarMonth = 0; } else calendarMonth++;
+      renderCalendar();
+    });
+    safeOn('calendar-download-ics', 'click', function () {
+      var ics = buildBookingsIcs();
+      var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'hairstelle-bookings.ics';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+    renderCalendar();
+
     renderOverview();
     renderSales();
     renderBookings();
@@ -1229,6 +1445,37 @@
         if (tab.getAttribute('data-tab-target') === 'stats-panel') setTimeout(drawStatsChart, 50);
       });
     });
+
+    safeOn('export-toggle', 'click', function () {
+      var btn = document.getElementById('export-toggle');
+      var panel = document.getElementById('export-panel');
+      if (!btn || !panel) return;
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', !open);
+      panel.setAttribute('aria-hidden', open);
+      panel.classList.toggle('is-open', !open);
+    });
+
+    var imagesTbody = document.getElementById('images-tbody');
+    if (imagesTbody) {
+      imagesTbody.addEventListener('change', function (e) {
+        if (!e.target.classList || !e.target.classList.contains('admin-image-file')) return;
+        var key = e.target.getAttribute('data-key');
+        var file = e.target.files && e.target.files[0];
+        if (!key || !file || !file.type.match(/^image\//)) return;
+        var row = e.target.closest('tr');
+        var reader = new FileReader();
+        reader.onload = function () {
+          var dataUrl = reader.result;
+          setImageOverride(key, dataUrl);
+          var urlInput = row && row.querySelector('.admin-image-url');
+          if (urlInput) urlInput.value = dataUrl;
+          var preview = row && row.querySelector('.admin-image-preview img');
+          if (preview) { preview.src = dataUrl; preview.style.display = ''; }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
   </script>
 </body>
 

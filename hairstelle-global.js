@@ -47,11 +47,25 @@
     }
   }
 
+  function setActiveNav() {
+    var path = window.location.pathname || '';
+    var page = path.split('/').pop() || path.split('/').slice(-1)[0] || '';
+    if (!page) page = 'home.html';
+    if (page === '' || page === '/') page = 'home.html';
+    document.querySelectorAll('.nav-links a, .nav-drawer a').forEach(function (a) {
+      var href = (a.getAttribute('href') || '').replace(/^\.\//, '');
+      a.classList.toggle('is-active', href === page || (page === '' && href === 'home.html'));
+    });
+  }
+
   function initHeader() {
+    setActiveNav();
     var toggle = document.getElementById('nav-toggle');
     var overlay = document.getElementById('nav-overlay');
     if (toggle && overlay) {
-      toggle.addEventListener('click', function () {
+      toggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         if (document.body.classList.contains('menu-open')) {
           closeMenu();
         } else {
@@ -184,6 +198,7 @@
   window.Hairstelle.closeAddToBagModal = closeAddToBagModal;
   window.Hairstelle.removeFromCart = removeFromCart;
   window.Hairstelle.closeMenu = closeMenu;
+  window.Hairstelle.escapeHtml = escapeHtml;
 
   function applyTheme() {
     try {
@@ -192,7 +207,7 @@
     } catch (e) {}
   }
   var IMAGE_DEFAULTS = {
-    header_logo: 'assets/hairstelle-logo.jpg',
+    header_logo: 'assets/hairstelle-logo-octagon.png',
     hero_home: 'assets/signature-artistry.jpg',
     gallery_1: 'assets/gallery-1.jpg',
     gallery_2: 'assets/gallery-2.jpg',
