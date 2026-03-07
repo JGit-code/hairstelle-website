@@ -6,6 +6,26 @@
 
   var CART_KEY = 'hairstelle_cart';
 
+  /** Fix logo and hero (and any /assets/ or assets/ images) to load via absolute URL so they show on Vercel like product images */
+  function fixAssetImageUrls() {
+    var origin = window.location.origin;
+    var pathname = window.location.pathname || '/';
+    var base = pathname.replace(/\/[^/]*$/, '') || '/';
+    document.querySelectorAll('img[src]').forEach(function (img) {
+      var s = (img.getAttribute('src') || '').trim();
+      if (!s || s.indexOf('http') === 0) return;
+      var absolute = s.indexOf('/') === 0
+        ? (base === '/' ? origin + s : origin + base + s)
+        : origin + base + (base === '/' ? '/' : '') + s;
+      if (absolute !== img.src) img.src = absolute;
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fixAssetImageUrls);
+  } else {
+    fixAssetImageUrls();
+  }
+
   function getCart() {
     try {
       return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
