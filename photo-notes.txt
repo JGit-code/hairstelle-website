@@ -1,0 +1,49 @@
+Hairstelle – Suggested Photo Library
+====================================
+
+Use this list as a guide for the photos you add into the `assets` folder to complete the luxury look.
+
+Hero & Brand
+- hero-main.jpg      – Tall, elegant portrait of a model wearing a signature Hairstelle wig against a simple background.
+- hero-studio.jpg    – Clean, minimal photo of the studio space or styling chair.
+
+Shop / Products
+- wig-crown-aura.jpg – Close-up of the Crown Aura Silk Wig on a mannequin or model.
+- wig-midnight.jpg   – Image for Midnight Muse Bob Unit.
+- wig-regal.jpg      – Image for Regal Essence Curly Wig.
+- bundles-velvet.jpg – Bundles laid out neatly for Velvet Luxe Wave Bundles.
+- bundles-opulent.jpg – Straight bundles for Opulent Tress Straight Bundles.
+- frontal-ethereal.jpg – Close-up of the lace and hairline for Ethereal Melt HD Frontal.
+- closure-couture.jpg – Image for Couture Seamless Closure.
+- care-serum.jpg     – Product shot of Silk Serum Radiance Drops.
+- care-heat-mist.jpg – Product shot of Crown Guard Heat Shield Mist.
+
+Services & Studio
+- service-silk-press.jpg – Before/after or side profile of a silk press.
+- service-wig-install.jpg – Wig install in progress or final look.
+- service-bridal.jpg – Bridal hair with veil or accessories.
+- service-editorial.jpg – Editorial or runway style close-up.
+
+Gallery / Clients
+- gallery-client-1.jpg – Smiling client after install.
+- gallery-client-2.jpg – Soft glam everyday look.
+- gallery-bridal-1.jpg – Bridal crown moment.
+- gallery-runway-1.jpg – Backstage runway shot.
+- gallery-competition-1.jpg – Competition or trophy moment.
+
+Brand & Details
+- detail-logo-flat.png – Flat version of the Hairstelle logo for light backgrounds.
+- detail-logo-dark.png – Logo version for dark backgrounds.
+- detail-accessories.jpg – Hair accessories, combs, pins styled beautifully.
+
+Admin / Behind-the-scenes (optional)
+- admin-desk.jpg – Laptop, notebook and coffee for the admin dashboard illustration (optional).
+
+Place these files in this `assets` folder and update the <img src=""> paths in your HTML if you want to replace the current gradient placeholders with real photos.
+
+Required for current site
+------------------------
+- hairstelle-logo-octagon.png – Main logo (header, footer, page loader). Use the octagonal “HAIRSTELLE by Estelle” design.
+- hairstelle-logo.jpg   – Fallback header logo (optional).
+- signature-artistry.jpg – Hero / signature artistry image on the home page.
+
