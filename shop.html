@@ -27,7 +27,7 @@
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <div class="page-loader" aria-hidden="true">
     <div class="loader-logo-wrap">
-      <img src="assets/hairstelle-logo-octagon.png" alt="" class="loader-logo" width="120" height="120" />
+      <img src="/assets/hairstelle-logo-octagon.png" alt="" class="loader-logo" width="120" height="120" />
     </div>
   </div>
   <header class="site-header">
@@ -39,7 +39,7 @@
       </button>
       <a href="home.html" class="brand-mark" aria-label="Hairstelle home">
         <div class="brand-logo-wrap">
-          <img src="assets/hairstelle-logo-octagon.png" alt="Hairstelle" class="brand-logo-img" width="44" height="44" loading="eager" data-hairstelle-image="header_logo" />
+          <img src="/assets/hairstelle-logo-octagon.png" alt="Hairstelle" class="brand-logo-img" width="44" height="44" loading="eager" data-hairstelle-image="header_logo" />
         </div>
         <div class="brand-text-wrap">
           <div class="brand-text-main">Hairstelle</div>
@@ -131,7 +131,7 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <div>
-        <img src="assets/hairstelle-logo-octagon.png" alt="Hairstelle" class="footer-logo" width="80" height="80" loading="lazy" />
+        <img src="/assets/hairstelle-logo-octagon.png" alt="Hairstelle" class="footer-logo" width="80" height="80" loading="lazy" />
         <div class="brand-text-main">Hairstelle</div>
         <p class="footer-brand-copy">
           Premium textures and editorial styling for women who invest in their crowns.
@@ -202,7 +202,7 @@
           '</div>' +
           '<div class="product-footer">' +
           '<span class="pill">' + escapeHtml(item.shortTag || 'New arrival') + '</span>' +
-          (item.link && item.link !== 'cart.html' ? '<a href="' + escapeHtml(item.link) + '" class="btn btn-small btn-ghost">View details</a>' : '') +
+          '<button type="button" class="btn btn-small btn-ghost" data-view-details data-product-id="' + escapeHtml(item.id || '') + '">View details</button>' +
           '<button type="button" class="btn btn-small" data-add-to-bag data-product-id="' + escapeHtml(item.id || '') + '">Add to bag</button>' +
           '</div>' +
           '</article>'
@@ -252,18 +252,33 @@
       renderShop();
 
       grid.addEventListener('click', function (e) {
-        var btn = e.target.closest('[data-add-to-bag]');
-        if (!btn) return;
-        var id = btn.getAttribute('data-product-id');
-        var list = catalog.getShopProducts();
-        var item = list.filter(function (p) { return (p.id || '') === id; })[0];
-        if (item) {
-          window._hairstelleModalProduct = item;
-          if (window.Hairstelle && window.Hairstelle.openAddToBagModal) window.Hairstelle.openAddToBagModal(item);
+        var addBtn = e.target.closest('[data-add-to-bag]');
+        if (addBtn) {
+          var id = addBtn.getAttribute('data-product-id');
+          var list = catalog.getShopProducts();
+          var item = list.filter(function (p) { return (p.id || '') === id; })[0];
+          if (item && window.Hairstelle && window.Hairstelle.openAddToBagModal) window.Hairstelle.openAddToBagModal(item);
         }
       });
     }());
   </script>
+  <div id="product-detail-modal" class="add-to-bag-modal product-detail-modal-wrap" aria-hidden="true">
+    <div class="add-to-bag-modal-backdrop" data-action="close-product-detail"></div>
+    <div class="product-detail-modal-box">
+      <button type="button" class="add-to-bag-modal-close" data-action="close-product-detail" aria-label="Close">&times;</button>
+      <div class="product-detail-modal-image-wrap">
+        <img data-pd="image" src="" alt="" class="product-detail-modal-img" />
+      </div>
+      <div class="product-detail-modal-body">
+        <div data-pd="category" class="product-detail-modal-category"></div>
+        <h3 data-pd="name" class="product-detail-modal-name"></h3>
+        <p data-pd="price" class="product-detail-modal-price"></p>
+        <p data-pd="details" class="product-detail-modal-details"></p>
+        <p data-pd="description" class="product-detail-modal-desc"></p>
+        <button type="button" class="btn mt-3" data-action="product-detail-add-to-bag">Add to bag</button>
+      </div>
+    </div>
+  </div>
   <div id="add-to-bag-modal" class="add-to-bag-modal" aria-hidden="true">
     <div class="add-to-bag-modal-backdrop"></div>
     <div class="add-to-bag-modal-box">

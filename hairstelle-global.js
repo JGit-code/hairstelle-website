@@ -63,23 +63,34 @@
     var toggle = document.getElementById('nav-toggle');
     var overlay = document.getElementById('nav-overlay');
     if (toggle && overlay) {
-      toggle.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
+      function toggleMenu(e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
         if (document.body.classList.contains('menu-open')) {
           closeMenu();
         } else {
           openMenu();
         }
-      });
+      }
+      toggle.addEventListener('click', toggleMenu);
       overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeMenu();
+      });
+      overlay.addEventListener('touchend', function (e) {
         if (e.target === overlay) closeMenu();
       });
       overlay.querySelectorAll('a').forEach(function (a) {
         a.addEventListener('click', closeMenu);
+        a.addEventListener('touchend', function (ev) { closeMenu(); });
       });
       overlay.querySelectorAll('[data-action="close-menu"]').forEach(function (btn) {
         btn.addEventListener('click', closeMenu);
+        btn.addEventListener('touchend', function (ev) {
+          ev.preventDefault();
+          closeMenu();
+        }, { passive: false });
       });
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && document.body.classList.contains('menu-open')) closeMenu();
@@ -138,6 +149,34 @@
     }
   }
 
+  function openProductDetailModal(product) {
+    var modal = document.getElementById('product-detail-modal');
+    if (!modal) return;
+    var img = modal.querySelector('[data-pd="image"]');
+    var nameEl = modal.querySelector('[data-pd="name"]');
+    var categoryEl = modal.querySelector('[data-pd="category"]');
+    var priceEl = modal.querySelector('[data-pd="price"]');
+    var detailsEl = modal.querySelector('[data-pd="details"]');
+    var descEl = modal.querySelector('[data-pd="description"]');
+    if (img) { img.src = product.image || ''; img.alt = product.name || ''; img.style.display = product.image ? '' : 'none'; }
+    if (nameEl) nameEl.textContent = product.name || '';
+    if (categoryEl) categoryEl.textContent = product.categoryLabel || product.category || '';
+    if (priceEl) priceEl.textContent = 'R' + Number(product.price || 0).toLocaleString('en-ZA');
+    if (detailsEl) { detailsEl.textContent = product.details || ''; detailsEl.style.display = product.details ? '' : 'none'; }
+    if (descEl) { descEl.textContent = product.description || ''; descEl.style.display = product.description ? '' : 'none'; }
+    modal.dataset.productId = product.id || '';
+    modal.classList.add('is-open');
+    document.body.classList.add('modal-open');
+  }
+
+  function closeProductDetailModal() {
+    var modal = document.getElementById('product-detail-modal');
+    if (modal) {
+      modal.classList.remove('is-open');
+      document.body.classList.remove('modal-open');
+    }
+  }
+
   function addToCart(productId, name, price, quantity, size, color) {
     var cart = getCart();
     var id = productId + '-' + (size || '') + '-' + (color || '') + '-' + Date.now();
@@ -157,6 +196,52 @@
   function removeFromCart(itemId) {
     var cart = getCart().filter(function (item) { return item.id !== itemId; });
     setCart(cart);
+  }
+
+  function initProductDetailModal() {
+    var modal = document.getElementById('product-detail-modal');
+    if (!modal) return;
+    modal.querySelectorAll('[data-action="close-product-detail"]').forEach(function (el) {
+      el.addEventListener('click', closeProductDetailModal);
+    });
+    var addBtn = modal.querySelector('[data-action="product-detail-add-to-bag"]');
+    if (addBtn) {
+      addBtn.addEventListener('click', function () {
+        var id = modal.dataset.productId;
+        var catalog = window.HairstelleCatalog;
+        if (id && catalog) {
+          var list = catalog.getShopProducts && catalog.getShopProducts();
+          var product = list && list.filter(function (p) { return (p.id || '') === id; })[0];
+          if (product) {
+            closeProductDetailModal();
+            openAddToBagModal(product);
+          }
+        }
+      });
+    }
+    document.addEventListener('click', function (e) {
+      var viewBtn = e.target.closest('[data-view-details]');
+      if (viewBtn) {
+        var id = viewBtn.getAttribute('data-product-id');
+        var catalog = window.HairstelleCatalog;
+        if (id && catalog && catalog.getShopProducts) {
+          var list = catalog.getShopProducts();
+          var product = list.filter(function (p) { return (p.id || '') === id; })[0];
+          if (product) openProductDetailModal(product);
+        }
+        return;
+      }
+      var addBtn = e.target.closest('[data-add-to-bag]');
+      if (addBtn) {
+        var id = addBtn.getAttribute('data-product-id');
+        var catalog = window.HairstelleCatalog;
+        if (id && catalog && catalog.getShopProducts) {
+          var list = catalog.getShopProducts();
+          var product = list.filter(function (p) { return (p.id || '') === id; })[0];
+          if (product) openAddToBagModal(product);
+        }
+      }
+    });
   }
 
   function initAddToBagModal() {
@@ -220,10 +305,21 @@
     try {
       var raw = localStorage.getItem('hairstelle_images');
       var overrides = raw ? JSON.parse(raw) : {};
+      var defaults = IMAGE_DEFAULTS;
       document.querySelectorAll('img[data-hairstelle-image]').forEach(function (img) {
         var key = img.getAttribute('data-hairstelle-image');
-        var url = overrides[key] !== undefined && overrides[key] !== '' ? overrides[key] : IMAGE_DEFAULTS[key];
-        if (url) img.src = url;
+        var url = overrides[key] !== undefined && overrides[key] !== '' ? overrides[key] : defaults[key];
+        if (url) {
+          img.src = url;
+          img.onerror = function () {
+            var def = defaults[key];
+            if (def && !this.dataset.fallbackTried) {
+              this.dataset.fallbackTried = '1';
+              this.src = def;
+            }
+            this.onerror = null;
+          };
+        }
       });
     } catch (e) {}
   }
@@ -236,11 +332,13 @@
     document.addEventListener('DOMContentLoaded', function () {
       initHeader();
       initAddToBagModal();
+      initProductDetailModal();
       initSiteConfig();
     });
   } else {
     initHeader();
     initAddToBagModal();
+    initProductDetailModal();
     initSiteConfig();
   }
 })();
