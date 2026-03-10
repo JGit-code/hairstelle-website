@@ -15,15 +15,18 @@
     rel="stylesheet" />
   <link rel="preload" href="/assets/hairstelle-logo-octagon.png" as="image" />
   <link rel="preload" href="/assets/signature-artistry.jpg" as="image" />
+  <style>
+    /* Critical: show loader immediately before main CSS loads */
+    html.is-loading .page-loader { display: flex !important; position: fixed; inset: 0; z-index: 9999; align-items: center; justify-content: center; background: radial-gradient(circle at top,#120c08,#020101); }
+    html.is-loading { overflow: hidden; }
+  </style>
   <link rel="stylesheet" href="styles.css" />
-  <script src="products-data.js"></script>
-  <script src="hairstelle-global.js"></script>
   <script>
     document.documentElement.classList.add('is-loading');
-    window.addEventListener('load', function () {
-      document.documentElement.classList.remove('is-loading');
-    });
+    window.addEventListener('load', function () { document.documentElement.classList.remove('is-loading'); });
   </script>
+  <script src="products-data.js"></script>
+  <script src="hairstelle-global.js"></script>
 </head>
 
 <body class="page">
@@ -116,8 +119,8 @@
           </div>
         </div>
         <div class="hero-media-card">
-          <div class="hero-image-frame">
-            <img src="/assets/signature-artistry.jpg" alt="Hairstelle signature bridal artistry" class="hero-image-photo" width="800" height="900" loading="eager" decoding="async" data-hairstelle-image="hero_home" />
+          <div class="hero-image-frame hero-image-frame--with-bg">
+            <img src="/assets/signature-artistry.jpg" alt="Hairstelle signature bridal artistry" class="hero-image-photo" width="800" height="900" loading="eager" decoding="async" fetchpriority="high" data-hairstelle-image="hero_home" />
             <div class="hero-chip">
               <span class="hero-chip-dot"></span>
               Signature artistry

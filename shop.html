@@ -12,15 +12,11 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400;500;600&display=swap"
     rel="stylesheet" />
+  <style>html.is-loading .page-loader{display:flex!important;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;background:radial-gradient(circle at top,#120c08,#020101)}html.is-loading{overflow:hidden}</style>
   <link rel="stylesheet" href="styles.css" />
+  <script>document.documentElement.classList.add('is-loading');window.addEventListener('load',function(){document.documentElement.classList.remove('is-loading');});</script>
   <script src="products-data.js"></script>
   <script src="hairstelle-global.js"></script>
-  <script>
-    document.documentElement.classList.add('is-loading');
-    window.addEventListener('load', function () {
-      document.documentElement.classList.remove('is-loading');
-    });
-  </script>
 </head>
 
 <body class="page">

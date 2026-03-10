@@ -813,12 +813,17 @@ body.modal-open {
   align-items: flex-end;
   padding: 1.4rem;
 }
-
+.hero-image-frame--with-bg {
+  background-color: #1a1410;
+  background-image: linear-gradient(145deg, #1c130f 0%, #2a1f18 50%, #1c130f 100%);
+}
 .hero-image-photo {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  object-position: center;
   max-width: 100%;
   max-height: 100%;
   object-fit: cover;
@@ -1046,7 +1051,8 @@ body.modal-open {
 }
 @media (max-width: 640px) {
   .product-grid {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
 }
 
@@ -1178,6 +1184,12 @@ body.modal-open {
   gap: 1.7rem;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
+@media (max-width: 640px) {
+  .service-grid:not(.service-grid--four) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
 
 .service-grid--four {
   grid-template-columns: repeat(4, 1fr);
@@ -1189,7 +1201,8 @@ body.modal-open {
 }
 @media (max-width: 640px) {
   .service-grid--four {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 }
 
@@ -2224,6 +2237,31 @@ body.modal-open {
   align-items: center;
   gap: 0.5rem 1rem;
 }
+@media (max-width: 768px) {
+  .shop-filters {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem 1rem;
+  }
+  .shop-filters .filter-label {
+    grid-column: 1;
+  }
+  .shop-filters .filter-select {
+    grid-column: 2;
+    min-width: 0;
+    max-width: none;
+    width: 100%;
+  }
+}
+@media (max-width: 480px) {
+  .shop-filters {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .shop-filters .filter-label,
+  .shop-filters .filter-select {
+    grid-column: 1;
+  }
+}
 
 .filter-label {
   font-size: 0.78rem;
@@ -2448,15 +2486,6 @@ body.modal-open {
   .product-footer .btn-small {
     flex: 1 1 auto;
     min-width: 0;
-  }
-
-  .shop-filters {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem 0.75rem;
-  }
-  .shop-filters .filter-select {
-    min-width: 0;
-    width: 100%;
   }
 
   .product-media {

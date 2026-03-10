@@ -6,11 +6,12 @@
 
   var CART_KEY = 'hairstelle_cart';
 
-  /** Fix logo and hero (and any /assets/ or assets/ images) to load via absolute URL so they show on Vercel like product images */
+  /** Fix logo and hero (and any /assets/ or assets/ images) to load via absolute URL so they show on Vercel/mobile */
   function fixAssetImageUrls() {
     var origin = window.location.origin;
     var pathname = window.location.pathname || '/';
     var base = pathname.replace(/\/[^/]*$/, '') || '/';
+    if (base === '') base = '/';
     document.querySelectorAll('img[src]').forEach(function (img) {
       var s = (img.getAttribute('src') || '').trim();
       if (!s || s.indexOf('http') === 0) return;
@@ -18,8 +19,20 @@
         ? (base === '/' ? origin + s : origin + base + s)
         : origin + base + (base === '/' ? '/' : '') + s;
       if (absolute !== img.src) img.src = absolute;
+      if (!img.hasAttribute('data-hairstelle-fallback')) {
+        img.setAttribute('data-hairstelle-fallback', '1');
+        img.addEventListener('error', function onImgError() {
+          if (this.getAttribute('data-hairstelle-retried')) return;
+          var rel = (s.indexOf('/') === 0 ? s.slice(1) : s);
+          if (rel) {
+            this.setAttribute('data-hairstelle-retried', '1');
+            this.setAttribute('src', rel);
+          }
+        });
+      }
     });
   }
+  if (document.body) fixAssetImageUrls();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', fixAssetImageUrls);
   } else {
