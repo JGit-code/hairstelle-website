@@ -95,22 +95,30 @@
         }
       }
       toggle.addEventListener('click', toggleMenu);
+      /* Close when tapping overlay background or any menu link. Use click only for links so mobile tap → synthetic click → navigate. */
       overlay.addEventListener('click', function (e) {
-        if (e.target === overlay) closeMenu();
+        if (e.target === overlay) {
+          closeMenu();
+          return;
+        }
+        var link = e.target.closest('a[href]');
+        if (link && overlay.contains(link)) {
+          closeMenu();
+        }
+        var closeBtn = e.target.closest('[data-action="close-menu"]');
+        if (closeBtn) {
+          e.preventDefault();
+          closeMenu();
+        }
       });
       overlay.addEventListener('touchend', function (e) {
         if (e.target === overlay) closeMenu();
       });
-      overlay.querySelectorAll('a').forEach(function (a) {
-        a.addEventListener('click', closeMenu);
-        a.addEventListener('touchend', function (ev) { closeMenu(); });
-      });
       overlay.querySelectorAll('[data-action="close-menu"]').forEach(function (btn) {
-        btn.addEventListener('click', closeMenu);
-        btn.addEventListener('touchend', function (ev) {
+        btn.addEventListener('click', function (ev) {
           ev.preventDefault();
           closeMenu();
-        }, { passive: false });
+        });
       });
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && document.body.classList.contains('menu-open')) closeMenu();

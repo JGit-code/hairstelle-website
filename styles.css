@@ -450,6 +450,9 @@ body.menu-open .nav-drawer,
   text-decoration: none;
   border-bottom: 1px solid rgba(212, 175, 55, 0.2);
   transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(212, 175, 55, 0.2);
+  cursor: pointer;
 }
 .nav-drawer a:hover,
 .nav-drawer a.is-active {
